@@ -1,75 +1,80 @@
-# 📝 Smart Tasks - Cloud-Powered Task Management App
+# 📝 Smart Tasks - Cloud-Powered Task Manager
 
 
+<<<<<<< HEAD
 
 A modern, premium task management application featuring Google Authentication, real-time cloud synchronization, and a stunning glassmorphism UI inspired by contemporary design trends.
+=======
+![Tasks App](https://img.shields.io/badge/React-18.3-blue?logo=react)
+![Firebase](https://img.shields.io/badge/Firebase-11.1-orange?logo=firebase)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38bdf8?logo=tailwindcss)
+
+A modern task management application with Google Authentication, real-time cloud synchronization, and a premium glassmorphism UI.
+
+[Live Demo](#) • [Report Bug](https://github.com/ayushagnihotrii/smart-tasks-app/issues) • [Request Feature](https://github.com/ayushagnihotrii/smart-tasks-app/issues)
+
+</div>
+>>>>>>> 37ebdda (docs: Simplify README for better clarity and professionalism)
 
 ---
 
 ## ✨ Features
 
-### 🔐 Authentication & Security
-- **Google Sign-In** - Secure OAuth authentication via Firebase
-- **Session Persistence** - Stay logged in across browser sessions
-- **User-Scoped Data** - Tasks are private and isolated per user
-
-### ☁️ Cloud Synchronization
-- **Real-Time Sync** - Tasks update instantly across all devices
-- **Firebase Firestore** - Reliable cloud database backend
-- **Offline Support** - Graceful handling of network issues
-
-### 📋 Task Management
-- **Create & Edit** - Add tasks with titles, descriptions, dates, and times
-- **Mark Complete** - Track task completion status
-- **Star Important** - Highlight priority tasks
-- **Filter Views** - View all tasks or starred tasks only
-- **Smart Notifications** - 1-hour deadline alerts
-
-### 🎨 Premium UI/UX
-- **Glassmorphism Design** - Frosted glass effects throughout
-- **Dark Gradients** - Elegant purple-blue gradient backgrounds
-- **Smooth Animations** - Polished hover effects and transitions
-- **Responsive Layout** - Optimized for mobile, tablet, and desktop
-- **Premium Typography** - Playfair Display + Inter font pairing
+- **🔐 Google Authentication** - Secure sign-in with Firebase Auth
+- **☁️ Real-Time Sync** - Tasks sync instantly across all devices
+- **📋 Task Management** - Create, edit, complete, and star tasks
+- **⏰ Smart Notifications** - Get alerts 1 hour before deadlines
+- **🎨 Premium UI** - Glassmorphism design with smooth animations
+- **📱 Responsive** - Works seamlessly on mobile, tablet, and desktop
 
 ---
 
+<<<<<<< HEAD
+=======
+## 🖼️ Screenshots
+
+### Login Screen
+![Login Page](https://via.placeholder.com/800x450/0a0a0f/667eea?text=Login+Screen)
+
+### Dashboard
+![Dashboard](https://via.placeholder.com/800x450/0a0a0f/667eea?text=Task+Dashboard)
+
+---
+>>>>>>> 37ebdda (docs: Simplify README for better clarity and professionalism)
 
 ## 🛠️ Tech Stack
 
-### Frontend
-- **React 18.3** - Modern UI library with hooks
-- **Vite 6.0** - Lightning-fast build tool and dev server
-- **Tailwind CSS 3.4** - Utility-first CSS framework
-- **Lucide React** - Beautiful, consistent icons
-- **date-fns** - Modern date utility library
+**Frontend**
+- React 18.3 - UI library
+- Vite 6.0 - Build tool
+- Tailwind CSS 3.4 - Styling
+- Lucide React - Icons
 
-### Backend & Services
-- **Firebase Authentication** - Google OAuth integration
-- **Firebase Firestore** - NoSQL cloud database
-- **Real-time Listeners** - Live data synchronization
+**Backend**
+- Firebase Authentication - User auth
+- Firebase Firestore - Database
+- Real-time listeners - Live sync
 
-### Design System
-- **Google Fonts** - Playfair Display (serif) + Inter (sans-serif)
-- **Custom Gradients** - Dark purple-blue color palette
-- **Glassmorphism** - Backdrop blur and transparency effects
-- **Custom Animations** - Floating orbs, glow pulses, smooth transitions
+**Design**
+- Glassmorphism effects
+- Dark gradient backgrounds
+- Custom animations
+- Playfair Display + Inter fonts
 
 ---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js 18+ and npm
-- Firebase account (free tier works)
-- Modern web browser
+- Node.js 18+
+- Firebase account (free tier)
 
 ### Installation
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
-   cd "To do list"
+   git clone https://github.com/ayushagnihotrii/smart-tasks-app.git
+   cd smart-tasks-app
    ```
 
 2. **Install dependencies**
@@ -80,18 +85,17 @@ A modern, premium task management application featuring Google Authentication, r
 3. **Configure Firebase**
    - Create a Firebase project at [console.firebase.google.com](https://console.firebase.google.com)
    - Enable Google Authentication
-   - Create a Firestore database
-   - Copy your Firebase config
-   - Paste it into `src/config/firebase.js`
-
+   - Create Firestore database
+   - Copy your config to `src/config/firebase.js`
+   
    See [FIREBASE_SETUP.md](./FIREBASE_SETUP.md) for detailed instructions.
 
-4. **Start the development server**
+4. **Start development server**
    ```bash
    npm run dev
    ```
 
-5. **Open in browser**
+5. **Open browser**
    Navigate to `http://localhost:5173`
 
 ---
@@ -99,145 +103,47 @@ A modern, premium task management application featuring Google Authentication, r
 ## 📁 Project Structure
 
 ```
-To do list/
+smart-tasks-app/
 ├── src/
-│   ├── components/          # React components
-│   │   ├── LoginPage.jsx    # Authentication screen
-│   │   ├── Sidebar.jsx      # Navigation sidebar
-│   │   ├── TaskList.jsx     # Task list container
-│   │   ├── TaskItem.jsx     # Individual task card
-│   │   ├── AddTaskModal.jsx # Task creation/edit modal
-│   │   └── NotificationBell.jsx # Notification system
-│   ├── contexts/
-│   │   └── AuthContext.jsx  # Authentication state management
-│   ├── services/
-│   │   └── taskService.js   # Firestore CRUD operations
-│   ├── config/
-│   │   └── firebase.js      # Firebase initialization
-│   ├── App.jsx              # Main application component
-│   ├── main.jsx             # Application entry point
-│   └── index.css            # Global styles & utilities
-├── public/                  # Static assets
-├── tailwind.config.js       # Tailwind configuration
-├── vite.config.js           # Vite configuration
-└── package.json             # Dependencies & scripts
+│   ├── components/       # React components
+│   ├── contexts/         # Auth context
+│   ├── services/         # Firestore services
+│   ├── config/           # Firebase config
+│   └── App.jsx           # Main app
+├── public/               # Static assets
+└── README.md
 ```
 
 ---
 
-## 🎨 Design Process
+## 🎯 How It Works
 
-### 1. Research & Inspiration
-- Analyzed modern task management apps
-- Studied glassmorphism design trends
-- Defined premium aesthetic goals
-
-### 2. Design System
-- Created color palette with dark gradients
-- Selected premium font pairing (Playfair Display + Inter)
-- Defined glassmorphism utilities and glow effects
-- Established animation principles
-
-### 3. Component Design
-- Designed login page with animated orbs
-- Created glassmorphism sidebar and task cards
-- Built premium modal with backdrop blur
-- Implemented smooth hover states
-
-### 4. Implementation
-- Built with React and Tailwind CSS
-- Integrated Firebase for authentication and database
-- Applied glassmorphism effects throughout
-- Optimized animations for 60fps performance
-
-### 5. Testing & Refinement
-- Tested across devices and browsers
-- Verified real-time synchronization
-- Ensured responsive design quality
-- Polished animations and transitions
-
----
-
-## 🎯 User Flow
-
-1. **Landing** → User sees premium login page
-2. **Authentication** → Click "Continue with Google" → OAuth popup
-3. **Dashboard** → View tasks with glassmorphism UI
-4. **Add Task** → Click "Add Task" → Fill modal → Save
-5. **Manage Tasks** → Complete, star, or edit tasks
-6. **Sync** → Changes sync in real-time across devices
-7. **Logout** → Secure sign-out, return to login
-
----
-
-## 🧠 What I Learned
-
-### UI/UX Design
-- Implementing glassmorphism with backdrop-filter
-- Creating premium dark mode aesthetics
-- Balancing visual hierarchy with elegant spacing
-- Designing smooth, performant animations
-
-### Frontend Development
-- React Context API for global state management
-- Real-time data synchronization with Firestore
-- Custom Tailwind utilities and animations
-- Responsive design with mobile-first approach
-
-### Backend Integration
-- Firebase Authentication flow and session persistence
-- Firestore security rules and data modeling
-- Real-time listeners and CRUD operations
-- User-scoped data queries
-
-### Performance Optimization
-- Optimizing backdrop-filter rendering
-- Implementing efficient animation keyframes
-- Managing real-time listener subscriptions
-- Lazy loading and code splitting
+1. **Sign In** - Click "Continue with Google"
+2. **View Tasks** - See all your tasks in a beautiful interface
+3. **Add Tasks** - Create tasks with titles, descriptions, dates, and times
+4. **Manage** - Complete, star, or edit tasks
+5. **Sync** - Changes sync automatically across all devices
 
 ---
 
 ## 🔒 Security
 
-### Firestore Security Rules
-```javascript
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /tasks/{taskId} {
-      allow read: if request.auth != null && 
-                     resource.data.userId == request.auth.uid;
-      allow create: if request.auth != null && 
-                       request.resource.data.userId == request.auth.uid;
-      allow update, delete: if request.auth != null && 
-                                resource.data.userId == request.auth.uid;
-    }
-  }
-}
-```
-
-All data operations are strictly scoped to the authenticated user's UID.
-
----
-
-## 📱 Responsive Design
-
-- **Mobile** (< 768px): Collapsible sidebar, touch-optimized interactions
-- **Tablet** (768px - 1024px): Balanced layout with persistent sidebar
-- **Desktop** (> 1024px): Full premium experience with all effects
+All data is user-scoped with Firestore security rules:
+- Users can only read/write their own tasks
+- Authentication required for all operations
+- Data isolated by user ID
 
 ---
 
 ## 🚀 Deployment
 
-### Build for Production
+**Build for production**
 ```bash
 npm run build
 ```
 
-### Deploy to Vercel/Netlify
-1. Connect your repository
+**Deploy to Vercel/Netlify**
+1. Connect your GitHub repository
 2. Set build command: `npm run build`
 3. Set output directory: `dist`
 4. Deploy!
@@ -248,6 +154,12 @@ npm run build
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
 ---
 
 ## 📄 License
@@ -256,17 +168,35 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ---
 
-## 🙏 Acknowledgments
+## 👨‍💻 Developer
 
-- **Firebase** - Authentication and database services
-- **Tailwind CSS** - Utility-first CSS framework
-- **Lucide Icons** - Beautiful icon library
-- **Google Fonts** - Premium typography
-- Design inspiration from contemporary glassmorphism trends
+**Ayush Agnihotri**
+
+[![GitHub](https://img.shields.io/badge/GitHub-Follow-black?style=flat&logo=github)](https://github.com/ayushagnihotrii)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=flat&logo=linkedin)](https://linkedin.com/in/ayushagnihotrii)
 
 ---
 
+<<<<<<< HEAD
 
 ---
 
 **Built with ❤️ using React, Firebase, and Tailwind CSS**
+=======
+## 🙏 Acknowledgments
+
+- [Firebase](https://firebase.google.com/) - Backend services
+- [Tailwind CSS](https://tailwindcss.com/) - Styling framework
+- [Lucide Icons](https://lucide.dev/) - Icon library
+- [React](https://react.dev/) - UI framework
+
+---
+
+<div align="center">
+
+**Built with ❤️ using React, Firebase, and Tailwind CSS**
+
+⭐ Star this repo if you find it helpful!
+
+</div>
+>>>>>>> 37ebdda (docs: Simplify README for better clarity and professionalism)

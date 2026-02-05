@@ -1,5 +1,5 @@
 import React from 'react';
-import { ListTodo, Star, X, LogOut } from 'lucide-react';
+import { ListTodo, Star, Calendar, X, LogOut } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 const Sidebar = ({ currentView, setCurrentView, isMobileMenuOpen, setIsMobileMenuOpen }) => {
@@ -8,6 +8,7 @@ const Sidebar = ({ currentView, setCurrentView, isMobileMenuOpen, setIsMobileMen
     const menuItems = [
         { id: 'all', label: 'My Tasks', icon: ListTodo },
         { id: 'starred', label: 'Starred Tasks', icon: Star },
+        { id: 'activity', label: 'Activity', icon: Calendar },
     ];
 
     const handleLogout = async () => {

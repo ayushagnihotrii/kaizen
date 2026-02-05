@@ -113,7 +113,11 @@ export const deleteTask = async (taskId) => {
  * @returns {Promise<void>}
  */
 export const toggleComplete = async (taskId, isCompleted) => {
-    return updateTask(taskId, { isCompleted });
+    const updates = {
+        isCompleted,
+        completedAt: isCompleted ? serverTimestamp() : null
+    };
+    return updateTask(taskId, updates);
 };
 
 /**

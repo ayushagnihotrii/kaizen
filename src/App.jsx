@@ -7,6 +7,7 @@ import TaskList from './components/TaskList';
 import AddTaskModal from './components/AddTaskModal';
 import NotificationBell from './components/NotificationBell';
 import LoginPage from './components/LoginPage';
+import ActivityHeatmap from './components/ActivityHeatmap';
 import './index.css';
 
 function App() {
@@ -152,19 +153,27 @@ function App() {
 
         {/* Desktop header with notification bell */}
         <header className="hidden md:flex bg-dark-surface border-b border-gray-700 px-6 py-4 items-center justify-between">
-          <h1 className="text-2xl font-semibold text-white">My Tasks</h1>
+          <h1 className="text-2xl font-semibold text-white">
+            {currentView === 'activity' ? 'Activity' : 'My Tasks'}
+          </h1>
           <NotificationBell tasks={tasks} />
         </header>
 
-        {/* Task list */}
-        <TaskList
-          tasks={filteredTasks}
-          onToggleComplete={handleToggleComplete}
-          onToggleStar={handleToggleStar}
-          onEdit={handleEditTask}
-          onOpenModal={() => setIsModalOpen(true)}
-          currentView={currentView}
-        />
+        {/* Main content area - conditionally render based on view */}
+        {currentView === 'activity' ? (
+          <div className="flex-1 overflow-y-auto p-6">
+            <ActivityHeatmap tasks={tasks} />
+          </div>
+        ) : (
+          <TaskList
+            tasks={filteredTasks}
+            onToggleComplete={handleToggleComplete}
+            onToggleStar={handleToggleStar}
+            onEdit={handleEditTask}
+            onOpenModal={() => setIsModalOpen(true)}
+            currentView={currentView}
+          />
+        )}
       </div>
 
       {/* Add/Edit task modal */}
