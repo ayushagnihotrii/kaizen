@@ -114,9 +114,13 @@ smart-tasks-app/
 └── README.md
 ```
 
+<<<<<<< HEAD
 ---
 
 ## 🎯 How It Works
+=======
+## 🎨 Design Process
+>>>>>>> 531dbfb1120d2a89581153599315f24718af9f23
 
 1. **Sign In** - Click "Continue with Google"
 2. **View Tasks** - See all your tasks in a beautiful interface
