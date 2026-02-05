@@ -1,29 +1,6 @@
 # 📝 Smart Tasks - Cloud-Powered Task Management App
 
-<div align="center">
 
-<!-- To use your Google/Gmail profile picture:
-     1. Go to https://myaccount.google.com/
-     2. Right-click your profile picture and copy image address
-     OR use this format: https://lh3.googleusercontent.com/a/YOUR_GOOGLE_ID
-     OR simply replace with your email: the app will fetch it automatically when you're logged in
--->
-<img src="https://lh3.googleusercontent.com/a/default-user" alt="Developer Profile" width="120" height="120" style="border-radius: 50%; border: 3px solid #667eea; box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);">
-
-### 👨‍💻 Developed by [Your Name]
-
-[![GitHub](https://img.shields.io/badge/GitHub-Profile-black?logo=github)](YOUR_GITHUB_URL)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?logo=linkedin)](YOUR_LINKEDIN_URL)
-[![Portfolio](https://img.shields.io/badge/Portfolio-Visit-purple)](YOUR_PORTFOLIO_URL)
-
-</div>
-
----
-
-![Tasks App](https://img.shields.io/badge/React-18.3-blue?logo=react)
-![Firebase](https://img.shields.io/badge/Firebase-11.1-orange?logo=firebase)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38bdf8?logo=tailwindcss)
-![Vite](https://img.shields.io/badge/Vite-6.0-646cff?logo=vite)
 
 A modern, premium task management application featuring Google Authentication, real-time cloud synchronization, and a stunning glassmorphism UI inspired by contemporary design trends.
 
@@ -57,18 +34,6 @@ A modern, premium task management application featuring Google Authentication, r
 
 ---
 
-## 🖼️ Screenshots
-
-### Login Screen
-Clean, centered login with animated gradient orbs and glassmorphism card.
-
-### Dashboard
-Premium task list with glassmorphism sidebar, glowing user avatar, and smooth animations.
-
-### Add Task Modal
-Elegant form with backdrop blur, glow focus states, and premium button styling.
-
----
 
 ## 🛠️ Tech Stack
 
@@ -301,30 +266,6 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ---
 
-## �‍💻 About the Developer
-
-<div align="center">
-
-<!-- Replace 'YOUR_IMAGE_URL_HERE' with your actual profile picture URL -->
-<img src="YOUR_IMAGE_URL_HERE" alt="Developer Profile" width="150" height="150" style="border-radius: 50%; border: 4px solid #667eea; box-shadow: 0 0 30px rgba(102, 126, 234, 0.6); margin: 20px 0;">
-
-### **[Your Name]**
-*Full-Stack Developer | UI/UX Enthusiast*
-
-Passionate about creating beautiful, functional web applications with modern technologies.
-
-[![GitHub](https://img.shields.io/badge/GitHub-Follow-black?style=for-the-badge&logo=github)](YOUR_GITHUB_URL)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=for-the-badge&logo=linkedin)](YOUR_LINKEDIN_URL)
-[![Portfolio](https://img.shields.io/badge/Portfolio-Visit-667eea?style=for-the-badge&logo=google-chrome)](YOUR_PORTFOLIO_URL)
-[![Email](https://img.shields.io/badge/Email-Contact-red?style=for-the-badge&logo=gmail)](mailto:YOUR_EMAIL)
-
-</div>
-
----
-
-## �📧 Contact
-
-For questions or feedback, please open an issue on GitHub or reach out via the links above.
 
 ---
 
