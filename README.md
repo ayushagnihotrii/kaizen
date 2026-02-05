@@ -123,8 +123,6 @@ To do list/
 └── package.json             # Dependencies & scripts
 ```
 
----
-
 ## 🎨 Design Process
 
 ### 1. Research & Inspiration
