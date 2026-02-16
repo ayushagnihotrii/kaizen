@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import {
     signInWithPopup,
+    signInWithRedirect,
+    getRedirectResult,
     signOut,
     onAuthStateChanged
 } from 'firebase/auth';
@@ -24,7 +26,7 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Sign in with Google
+    // Sign in with Google — try popup first, fallback to redirect
     const login = async () => {
         try {
             setError(null);
@@ -32,8 +34,43 @@ export const AuthProvider = ({ children }) => {
             return result.user;
         } catch (error) {
             console.error('Login error:', error);
-            setError(error.message);
+            // If popup was blocked or closed, try redirect instead
+            if (
+                error.code === 'auth/popup-blocked' ||
+                error.code === 'auth/popup-closed-by-user' ||
+                error.code === 'auth/cancelled-popup-request'
+            ) {
+                try {
+                    await signInWithRedirect(auth, googleProvider);
+                    return; // Page will redirect, no user returned yet
+                } catch (redirectError) {
+                    console.error('Redirect login error:', redirectError);
+                    setError(getReadableError(redirectError));
+                    throw redirectError;
+                }
+            }
+            setError(getReadableError(error));
             throw error;
+        }
+    };
+
+    // Human-readable error messages
+    const getReadableError = (error) => {
+        switch (error.code) {
+            case 'auth/popup-blocked':
+                return 'Popup was blocked by your browser. Please allow popups for this site.';
+            case 'auth/popup-closed-by-user':
+                return 'Login popup was closed. Please try again.';
+            case 'auth/cancelled-popup-request':
+                return 'Login was cancelled. Please try again.';
+            case 'auth/unauthorized-domain':
+                return 'This domain is not authorized for login. Please contact the administrator.';
+            case 'auth/network-request-failed':
+                return 'Network error. Please check your internet connection.';
+            case 'auth/internal-error':
+                return 'An internal error occurred. Please try again later.';
+            default:
+                return error.message || 'An unexpected error occurred during sign-in.';
         }
     };
 
@@ -49,8 +86,22 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    // Listen for auth state changes
+    // Listen for auth state changes + handle redirect result
     useEffect(() => {
+        // Check if user is coming back from a redirect sign-in
+        getRedirectResult(auth)
+            .then((result) => {
+                if (result?.user) {
+                    setCurrentUser(result.user);
+                }
+            })
+            .catch((error) => {
+                console.error('Redirect result error:', error);
+                if (error.code !== 'auth/popup-closed-by-user') {
+                    setError(getReadableError(error));
+                }
+            });
+
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setCurrentUser(user);
             setLoading(false);
