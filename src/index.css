@@ -1,22 +1,38 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ========================================
+   HABIT TRACKER - RETRO WIN98 + CYBERPUNK
+   ======================================== */
+
 :root {
-  font-family: Inter, system-ui, sans-serif;
-  line-height: 1.5;
+  --win-gray: #C0C0C0;
+  --win-dark: #808080;
+  --win-light: #FFFFFF;
+  --win-darkest: #000000;
+  --neon-green: #33FF00;
+  --neon-green-dim: #1a8c00;
+  --title-blue-start: #000080;
+  --title-blue-end: #1084d0;
+  --crt-bg: #000000;
+  --accent-red: #FF4444;
+  --accent-purple: #b040ff;
+  --accent-pink: #ff40b0;
+
+  font-family: 'VT323', ui-monospace, 'Courier New', monospace;
+  line-height: 1.4;
   font-weight: 400;
-
   color-scheme: dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #0a0a0f;
-
+  color: var(--neon-green);
+  background-color: var(--crt-bg);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+  image-rendering: pixelated;
 }
 
 * {
@@ -28,107 +44,691 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+  background: var(--crt-bg);
   position: relative;
-  overflow-x: hidden;
-}
-
-/* Subtle noise texture overlay */
-body::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 1;
+  overflow: hidden;
 }
 
 #root {
   min-height: 100vh;
   position: relative;
-  z-index: 2;
+  z-index: 1;
 }
 
-/* Glassmorphism utility classes */
-@layer utilities {
-  .glass {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .glass-strong {
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-  }
-
-  .glow-text {
-    text-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
-  }
+/* ========================================
+   BACKGROUND GRID
+   ======================================== */
+.desktop-bg {
+  position: fixed;
+  inset: 0;
+  background:
+    repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(51,255,0,0.03) 59px, rgba(51,255,0,0.03) 60px),
+    repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(51,255,0,0.03) 59px, rgba(51,255,0,0.03) 60px);
+  pointer-events: none;
+  z-index: 0;
 }
 
-/* Custom scrollbar for dark mode */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+/* ========================================
+   CRT SCANLINE OVERLAY
+   ======================================== */
+.crt-scanlines {
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(0,0,0,0.15) 1px, rgba(0,0,0,0.15) 2px);
+  pointer-events: none;
+  z-index: 9999;
 }
 
-::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.2);
+/* ========================================
+   CRT FLICKER + GRAIN
+   ======================================== */
+.crt-flicker {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  animation: crtFlicker 0.15s infinite alternate;
 }
 
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
+@keyframes crtFlicker {
+  0% { opacity: 1; }
+  50% { opacity: 0.98; }
+  100% { opacity: 1; }
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+.crt-grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9997;
+  opacity: 0.04;
+  animation: grainShift 0.5s steps(4) infinite;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* Smooth transitions */
-* {
-  transition: background-color 0.3s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.3s ease;
+@keyframes grainShift {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-2px, 1px); }
+  50% { transform: translate(1px, -1px); }
+  75% { transform: translate(-1px, 2px); }
+  100% { transform: translate(2px, -2px); }
 }
 
-button {
+/* ========================================
+   CRT VIGNETTE
+   ======================================== */
+.crt-vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9996;
+  background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.5) 100%);
+}
+
+/* ========================================
+   NEON GLOW UTILITIES
+   ======================================== */
+.neon-text {
+  color: var(--neon-green);
+  text-shadow: 0 0 4px var(--neon-green), 0 0 8px var(--neon-green), 0 0 16px rgba(51,255,0,0.4);
+}
+
+.neon-text-dim {
+  color: var(--neon-green);
+  text-shadow: 0 0 2px var(--neon-green), 0 0 6px rgba(51,255,0,0.3);
+}
+
+.neon-border {
+  box-shadow: 0 0 4px var(--neon-green), 0 0 8px rgba(51,255,0,0.3), inset 0 0 4px rgba(51,255,0,0.1);
+}
+
+/* ========================================
+   WIN98 3D BEVEL BORDERS
+   ======================================== */
+.bevel-raised {
+  border-top: 2px solid var(--win-light);
+  border-left: 2px solid var(--win-light);
+  border-bottom: 2px solid var(--win-dark);
+  border-right: 2px solid var(--win-dark);
+}
+
+.bevel-inset {
+  border-top: 2px solid var(--win-dark);
+  border-left: 2px solid var(--win-dark);
+  border-bottom: 2px solid var(--win-light);
+  border-right: 2px solid var(--win-light);
+}
+
+.bevel-button {
+  border-top: 2px solid var(--win-light);
+  border-left: 2px solid var(--win-light);
+  border-bottom: 2px solid var(--win-darkest);
+  border-right: 2px solid var(--win-darkest);
+  background: var(--win-gray);
+  color: #000;
+  font-family: 'VT323', ui-monospace, 'Courier New', monospace;
+  font-size: 16px;
+  padding: 4px 16px;
   cursor: pointer;
+  outline: none;
+  text-transform: uppercase;
 }
 
-/* Modal animation */
-@keyframes scale-in {
-  from {
-    opacity: 0;
-    transform: scale(0.95) translateY(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
+.bevel-button:active {
+  border-top: 2px solid var(--win-darkest);
+  border-left: 2px solid var(--win-darkest);
+  border-bottom: 2px solid var(--win-light);
+  border-right: 2px solid var(--win-light);
+  padding: 5px 15px 3px 17px;
 }
 
-.animate-scale-in {
-  animation: scale-in 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+.bevel-button:hover {
+  background: #d0d0d0;
 }
 
-/* Fade in animation */
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
+.bevel-button.active-btn {
+  border-top: 2px solid var(--win-darkest);
+  border-left: 2px solid var(--win-darkest);
+  border-bottom: 2px solid var(--win-light);
+  border-right: 2px solid var(--win-light);
+  background: #b0b0b0;
 }
 
-.animate-fade-in {
-  animation: fade-in 0.5s ease-out;
+/* ========================================
+   WIN98 WINDOW
+   ======================================== */
+.win98-window {
+  background: var(--win-gray);
+  border-top: 2px solid var(--win-light);
+  border-left: 2px solid var(--win-light);
+  border-bottom: 2px solid var(--win-darkest);
+  border-right: 2px solid var(--win-darkest);
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+}
+
+.win98-titlebar {
+  background: linear-gradient(90deg, var(--title-blue-start), var(--title-blue-end));
+  color: white;
+  padding: 3px 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: grab;
+  user-select: none;
+  flex-shrink: 0;
+  height: 28px;
+}
+
+.win98-titlebar:active {
+  cursor: grabbing;
+}
+
+.win98-titlebar-inactive {
+  background: linear-gradient(90deg, #808080, #b0b0b0);
+}
+
+.win98-title-text {
+  font-family: 'VT323', ui-monospace, monospace;
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+}
+
+.win98-title-buttons {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.win98-title-btn {
+  width: 20px;
+  height: 20px;
+  background: var(--win-gray);
+  border-top: 2px solid var(--win-light);
+  border-left: 2px solid var(--win-light);
+  border-bottom: 2px solid var(--win-darkest);
+  border-right: 2px solid var(--win-darkest);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+  color: #000;
+  line-height: 1;
+  padding: 0;
+  font-family: 'VT323', monospace;
+}
+
+.win98-title-btn:active {
+  border-top: 2px solid var(--win-darkest);
+  border-left: 2px solid var(--win-darkest);
+  border-bottom: 2px solid var(--win-light);
+  border-right: 2px solid var(--win-light);
+}
+
+.win98-content {
+  padding: 8px;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  color: #000;
+  font-family: 'VT323', ui-monospace, monospace;
+  font-size: 16px;
+}
+
+.win98-content::-webkit-scrollbar { width: 18px; }
+.win98-content::-webkit-scrollbar-track { background: var(--win-gray); border-left: 1px solid var(--win-dark); }
+.win98-content::-webkit-scrollbar-thumb {
+  background: var(--win-gray);
+  border-top: 2px solid var(--win-light);
+  border-left: 2px solid var(--win-light);
+  border-bottom: 2px solid var(--win-darkest);
+  border-right: 2px solid var(--win-darkest);
+}
+.win98-content::-webkit-scrollbar-button {
+  display: block; height: 18px; background: var(--win-gray);
+  border-top: 2px solid var(--win-light); border-left: 2px solid var(--win-light);
+  border-bottom: 2px solid var(--win-darkest); border-right: 2px solid var(--win-darkest);
+}
+
+/* ========================================
+   WIN98 FORM ELEMENTS
+   ======================================== */
+.win98-input {
+  background: #fff;
+  border-top: 2px solid var(--win-dark);
+  border-left: 2px solid var(--win-dark);
+  border-bottom: 2px solid var(--win-light);
+  border-right: 2px solid var(--win-light);
+  padding: 4px 6px;
+  font-family: 'VT323', ui-monospace, monospace;
+  font-size: 16px;
+  color: #000;
+  outline: none;
+  width: 100%;
+}
+
+.win98-input:focus {
+  outline: 1px dotted #000;
+  outline-offset: -1px;
+}
+
+.win98-select {
+  background: #fff;
+  border-top: 2px solid var(--win-dark);
+  border-left: 2px solid var(--win-dark);
+  border-bottom: 2px solid var(--win-light);
+  border-right: 2px solid var(--win-light);
+  padding: 4px 6px;
+  font-family: 'VT323', ui-monospace, monospace;
+  font-size: 16px;
+  color: #000;
+  outline: none;
+  width: 100%;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M0 0L6 8L12 0Z' fill='%23000'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 6px center;
+  padding-right: 24px;
+}
+
+.win98-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #fff;
+  border-top: 2px solid var(--win-dark);
+  border-left: 2px solid var(--win-dark);
+  border-bottom: 2px solid var(--win-light);
+  border-right: 2px solid var(--win-light);
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.win98-checkbox:checked::after {
+  content: '✓';
+  position: absolute;
+  top: -2px;
+  left: 2px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #000;
+}
+
+/* ========================================
+   TASKBAR
+   ======================================== */
+.win98-taskbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: var(--win-gray);
+  border-top: 2px solid var(--win-light);
+  display: flex;
+  align-items: center;
+  padding: 2px 4px;
+  z-index: 9990;
+  gap: 4px;
+}
+
+.start-button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 4px 10px;
+  height: 32px;
+}
+
+.start-button .start-logo {
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(135deg, #ff0000 25%, #00ff00 25%, #00ff00 50%, #0000ff 50%, #0000ff 75%, #ffff00 75%);
+  image-rendering: pixelated;
+}
+
+.taskbar-windows {
+  display: flex;
+  gap: 3px;
+  flex: 1;
+  overflow-x: auto;
+  padding: 0 4px;
+}
+
+.taskbar-window-btn {
+  height: 28px;
+  min-width: 120px;
+  max-width: 180px;
+  font-size: 14px;
+  padding: 2px 8px;
+  text-align: left;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.taskbar-clock {
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  height: 28px;
+  font-size: 14px;
+  color: #000;
+  border-top: 2px solid var(--win-dark);
+  border-left: 2px solid var(--win-dark);
+  border-bottom: 2px solid var(--win-light);
+  border-right: 2px solid var(--win-light);
+  white-space: nowrap;
+}
+
+/* ========================================
+   START MENU
+   ======================================== */
+.start-menu {
+  position: fixed;
+  bottom: 40px;
+  left: 0;
+  width: 260px;
+  background: var(--win-gray);
+  border-top: 2px solid var(--win-light);
+  border-left: 2px solid var(--win-light);
+  border-right: 2px solid var(--win-darkest);
+  border-bottom: 2px solid var(--win-darkest);
+  z-index: 9991;
+  display: flex;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.4);
+}
+
+.start-menu-sidebar {
+  width: 30px;
+  background: linear-gradient(180deg, var(--title-blue-start), var(--title-blue-end));
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 8px;
+}
+
+.start-menu-sidebar-text {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+  white-space: nowrap;
+}
+
+.start-menu-items {
+  flex: 1;
+  padding: 4px 0;
+}
+
+.start-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 12px;
+  color: #000;
+  cursor: pointer;
+  font-size: 16px;
+  white-space: nowrap;
+  font-family: 'VT323', monospace;
+}
+
+.start-menu-item:hover {
+  background: var(--title-blue-start);
+  color: white;
+}
+
+.start-menu-divider {
+  height: 2px;
+  margin: 3px 4px;
+  border-top: 1px solid var(--win-dark);
+  border-bottom: 1px solid var(--win-light);
+}
+
+/* ========================================
+   DESKTOP ICONS
+   ======================================== */
+.desktop-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80px;
+  padding: 6px 4px;
+  cursor: default;
+  user-select: none;
+  text-align: center;
+  border: 1px solid transparent;
+}
+
+.desktop-icon:hover {
+  border: 1px dotted rgba(51,255,0,0.5);
+}
+
+.desktop-icon.selected {
+  border: 1px dotted var(--neon-green);
+}
+
+.desktop-icon.selected .desktop-icon-label {
+  background: var(--title-blue-start);
+  color: white;
+}
+
+.desktop-icon-img {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 4px;
+  image-rendering: pixelated;
+}
+
+.desktop-icon-label {
+  font-size: 14px;
+  color: var(--neon-green);
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.9), 0 0 6px rgba(51,255,0,0.3);
+  padding: 1px 4px;
+  word-break: break-all;
+  line-height: 1.2;
+}
+
+/* ========================================
+   TERMINAL-STYLE ELEMENTS
+   ======================================== */
+.terminal-header {
+  background: #000;
+  color: var(--neon-green);
+  padding: 6px 10px;
+  font-size: 14px;
+  border-top: 2px solid var(--win-dark);
+  border-left: 2px solid var(--win-dark);
+  border-bottom: 2px solid var(--win-light);
+  border-right: 2px solid var(--win-light);
+  text-shadow: 0 0 4px var(--neon-green);
+  font-family: 'VT323', monospace;
+}
+
+.terminal-box {
+  background: #000;
+  color: var(--neon-green);
+  padding: 12px;
+  border-top: 2px solid var(--win-dark);
+  border-left: 2px solid var(--win-dark);
+  border-bottom: 2px solid var(--win-light);
+  border-right: 2px solid var(--win-light);
+  font-family: 'VT323', monospace;
+  font-size: 16px;
+  text-shadow: 0 0 4px var(--neon-green);
+  white-space: pre;
+  overflow-x: auto;
+  line-height: 1.4;
+}
+
+/* ========================================
+   CATEGORY BADGES
+   ======================================== */
+.category-badge {
+  display: inline-block;
+  padding: 1px 8px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: 'VT323', monospace;
+  border: 1px solid;
+}
+
+/* ========================================
+   WIN98 COLOR PICKER
+   ======================================== */
+.win98-color-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 3px;
+}
+
+.win98-color-swatch {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  border-top: 1px solid var(--win-light);
+  border-left: 1px solid var(--win-light);
+  border-bottom: 1px solid var(--win-dark);
+  border-right: 1px solid var(--win-dark);
+}
+
+.win98-color-swatch.selected {
+  border: 2px solid #000;
+  outline: 1px solid var(--neon-green);
+}
+
+/* ========================================
+   HABIT ITEM
+   ======================================== */
+.habit-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border-bottom: 1px solid #a0a0a0;
+}
+
+.habit-item:hover {
+  background: #d4d4d4;
+}
+
+.habit-item.completed-habit .habit-name {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+.habit-name {
+  flex: 1;
+  font-size: 16px;
+}
+
+.habit-streak {
+  font-size: 14px;
+  color: #000;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ========================================
+   WIN98 GROUP BOX
+   ======================================== */
+.win98-groupbox {
+  border: 1px solid var(--win-dark);
+  padding: 12px 8px 8px;
+  margin: 8px 0;
+  position: relative;
+}
+
+.win98-groupbox-label {
+  position: absolute;
+  top: -8px;
+  left: 8px;
+  background: var(--win-gray);
+  padding: 0 4px;
+  font-size: 14px;
+  color: #000;
+  text-transform: uppercase;
+}
+
+/* ========================================
+   ABOUT LOGO
+   ======================================== */
+.about-logo {
+  font-size: 48px;
+  text-align: center;
+  background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 8px rgba(176,64,255,0.5));
+  font-family: 'VT323', monospace;
+  letter-spacing: 4px;
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.cursor-blink::after {
+  content: '█';
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes bootUp {
+  0% { opacity: 0; transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.window-open {
+  animation: bootUp 0.15s ease-out;
+}
+
+.window-minimized {
+  display: none !important;
+}
+
+/* ========================================
+   RESPONSIVE (Mobile)
+   ======================================== */
+@media (max-width: 768px) {
+  .win98-window {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: calc(100vh - 40px) !important;
+    transform: none !important;
+  }
+
+  .desktop-icons-grid {
+    display: none;
+  }
+
+  .win98-titlebar {
+    cursor: default;
+  }
 }

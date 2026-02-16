@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { LogIn } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import GradientBackground from './GradientBackground';
 
-const LoginPage = () => {
+export default function LoginPage() {
     const { login, error } = useAuth();
     const [isLoading, setIsLoading] = useState(false);
 
@@ -18,11 +20,13 @@ const LoginPage = () => {
 
     return (
         <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
-            {/* Animated gradient orbs */}
-            <div className="absolute top-20 right-20 w-96 h-96 bg-gradient-accent opacity-20 rounded-full blur-3xl animate-float" />
-            <div className="absolute bottom-20 left-20 w-80 h-80 bg-gradient-glow opacity-15 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
+            {/* Animated Gradient Background */}
+            <GradientBackground />
 
-            <div className="max-w-lg w-full relative z-10 animate-fade-in">
+            {/* Subtle overlay for better text contrast */}
+            <div className="absolute inset-0 bg-black/20 -z-10" />
+
+            <div className="max-w-md w-full space-y-8 relative z-10 animate-fade-in">
                 {/* Logo/Title */}
                 <div className="text-center mb-12">
                     <h1 className="text-6xl md:text-7xl font-display font-bold text-white mb-4 glow-text">
@@ -118,6 +122,4 @@ const LoginPage = () => {
             </div>
         </div>
     );
-};
-
-export default LoginPage;
+}

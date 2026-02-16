@@ -8,6 +8,7 @@ import AddTaskModal from './components/AddTaskModal';
 import NotificationBell from './components/NotificationBell';
 import LoginPage from './components/LoginPage';
 import ActivityHeatmap from './components/ActivityHeatmap';
+import GradientBackground from './components/GradientBackground';
 import './index.css';
 
 function App() {
@@ -125,7 +126,13 @@ function App() {
   }
 
   return (
-    <div className="dark min-h-screen bg-dark-bg flex">
+    <div className="dark min-h-screen bg-dark-bg flex relative overflow-hidden">
+      {/* Animated Gradient Background */}
+      <GradientBackground />
+
+      {/* Subtle overlay for better contrast */}
+      <div className="absolute inset-0 bg-black/30 -z-10" />
+
       {/* Sidebar */}
       <Sidebar
         currentView={currentView}
