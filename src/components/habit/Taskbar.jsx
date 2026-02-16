@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-export default function Taskbar({ windows, activeWindowId, onWindowClick, onStartClick, startMenuOpen }) {
+export default function Taskbar({ windows, activeWindowId, onWindowClick, onStartClick, startMenuOpen, notificationBell }) {
   const [time, setTime] = useState('');
 
   useEffect(() => {
@@ -61,8 +61,11 @@ export default function Taskbar({ windows, activeWindowId, onWindowClick, onStar
         borderRight: '1px solid #fff',
         margin: '0 2px',
       }} />
-      <div className="taskbar-clock">
-        {time}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+        {notificationBell}
+        <div className="taskbar-clock">
+          {time}
+        </div>
       </div>
     </div>
   );

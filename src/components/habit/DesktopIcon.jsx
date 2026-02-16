@@ -2,6 +2,39 @@ import React from 'react';
 
 // Pixel-art style SVG icons for each desktop item
 const ICONS = {
+  tasks: (
+    <svg viewBox="0 0 32 32" width="40" height="40" style={{ imageRendering: 'pixelated' }}>
+      <rect x="3" y="2" width="26" height="28" fill="#1a1a2e" stroke="#33FF00" strokeWidth="1"/>
+      <rect x="3" y="2" width="26" height="5" fill="#000080"/>
+      <text x="16" y="6" textAnchor="middle" fontSize="4" fill="#33FF00" fontFamily="monospace">TASKS</text>
+      <rect x="7" y="10" width="4" height="4" fill="#33FF00" stroke="#33FF00" strokeWidth="0.5"/>
+      <line x1="14" y1="12" x2="26" y2="12" stroke="#33FF00" strokeWidth="1"/>
+      <rect x="7" y="16" width="4" height="4" fill="transparent" stroke="#33FF00" strokeWidth="0.5"/>
+      <line x1="14" y1="18" x2="26" y2="18" stroke="#33FF00" strokeWidth="1"/>
+      <rect x="7" y="22" width="4" height="4" fill="transparent" stroke="#33FF00" strokeWidth="0.5"/>
+      <line x1="14" y1="24" x2="26" y2="24" stroke="#33FF00" strokeWidth="1"/>
+    </svg>
+  ),
+  activity: (
+    <svg viewBox="0 0 32 32" width="40" height="40" style={{ imageRendering: 'pixelated' }}>
+      <rect x="2" y="2" width="28" height="28" fill="#1a1a2e" stroke="#808080" strokeWidth="1"/>
+      <rect x="2" y="2" width="28" height="5" fill="#000080"/>
+      <text x="16" y="6" textAnchor="middle" fontSize="4" fill="#33FF00" fontFamily="monospace">CAL</text>
+      {/* Calendar grid */}
+      <rect x="5" y="10" width="5" height="4" fill="#0a4400" stroke="#1a1a2e" strokeWidth="0.5"/>
+      <rect x="11" y="10" width="5" height="4" fill="#1a8c00" stroke="#1a1a2e" strokeWidth="0.5"/>
+      <rect x="17" y="10" width="5" height="4" fill="#33FF00" stroke="#1a1a2e" strokeWidth="0.5"/>
+      <rect x="23" y="10" width="5" height="4" fill="#1a1a1a" stroke="#1a1a2e" strokeWidth="0.5"/>
+      <rect x="5" y="15" width="5" height="4" fill="#1a1a1a" stroke="#1a1a2e" strokeWidth="0.5"/>
+      <rect x="11" y="15" width="5" height="4" fill="#0a4400" stroke="#1a1a2e" strokeWidth="0.5"/>
+      <rect x="17" y="15" width="5" height="4" fill="#26cc00" stroke="#1a1a2e" strokeWidth="0.5"/>
+      <rect x="23" y="15" width="5" height="4" fill="#33FF00" stroke="#1a1a2e" strokeWidth="0.5"/>
+      <rect x="5" y="20" width="5" height="4" fill="#1a8c00" stroke="#1a1a2e" strokeWidth="0.5"/>
+      <rect x="11" y="20" width="5" height="4" fill="#33FF00" stroke="#1a1a2e" strokeWidth="0.5"/>
+      <rect x="17" y="20" width="5" height="4" fill="#1a1a1a" stroke="#1a1a2e" strokeWidth="0.5"/>
+      <rect x="23" y="20" width="5" height="4" fill="#0a4400" stroke="#1a1a2e" strokeWidth="0.5"/>
+    </svg>
+  ),
   newhabit: (
     <svg viewBox="0 0 32 32" width="40" height="40" style={{ imageRendering: 'pixelated' }}>
       <rect x="4" y="2" width="24" height="28" fill="#FFFFCC" stroke="#000" strokeWidth="1"/>

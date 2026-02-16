@@ -8,6 +8,10 @@ import HabitListWindow from './HabitListWindow';
 import StatsWindow from './StatsWindow';
 import SettingsWindow from './SettingsWindow';
 import AboutWindow from './AboutWindow';
+import TasksWindow from './TasksWindow';
+import Win98ActivityWindow from './Win98ActivityWindow';
+import Win98Notifications from './Win98Notifications';
+import { useAuth } from '../../contexts/AuthContext';
 
 // ── localStorage helpers ──────────────────────────
 const STORAGE_KEY = 'habitTracker_habits';
@@ -74,12 +78,24 @@ const WINDOW_DEFS = {
     defaultPosition: { x: 340, y: 80 },
     defaultSize: { width: 400, height: 440 },
   },
+  tasks: {
+    title: 'Tasks.exe',
+    defaultPosition: { x: 200, y: 30 },
+    defaultSize: { width: 520, height: 520 },
+  },
+  activity: {
+    title: 'Activity.exe',
+    defaultPosition: { x: 240, y: 50 },
+    defaultSize: { width: 480, height: 500 },
+  },
 };
 
 // Desktop icon definitions
 const DESKTOP_ICONS = [
+  { id: 'tasks', label: 'Tasks.exe', iconType: 'tasks' },
   { id: 'newhabit', label: 'NewHabit.exe', iconType: 'newhabit' },
   { id: 'habits', label: 'MyHabits.txt', iconType: 'habits' },
+  { id: 'activity', label: 'Activity.exe', iconType: 'activity' },
   { id: 'stats', label: 'Stats.exe', iconType: 'stats' },
   { id: 'settings', label: 'Settings.exe', iconType: 'settings' },
 ];
@@ -155,7 +171,15 @@ const calculateStreak = (completionHistory) => {
 // ══════════════════════════════════════════════════
 //  DESKTOP COMPONENT
 // ══════════════════════════════════════════════════
-export default function Desktop() {
+export default function Desktop({
+  firebaseTasks = [],
+  onAddTask,
+  onEditTask,
+  onToggleComplete,
+  onToggleStar,
+}) {
+  const { currentUser, logout } = useAuth();
+  const [tasksView, setTasksView] = useState('all');
   // ── State ──
   const [habits, setHabits] = useState(loadHabits);
   const [settings, setSettings] = useState(loadSettings);
@@ -366,6 +390,20 @@ export default function Desktop() {
         );
       case 'about':
         return <AboutWindow />;
+      case 'tasks':
+        return (
+          <TasksWindow
+            tasks={firebaseTasks}
+            onAddTask={onAddTask}
+            onEditTask={onEditTask}
+            onToggleComplete={onToggleComplete}
+            onToggleStar={onToggleStar}
+            currentView={tasksView}
+            onSetView={setTasksView}
+          />
+        );
+      case 'activity':
+        return <Win98ActivityWindow tasks={firebaseTasks} />;
       default:
         return <div>Unknown window</div>;
     }
@@ -457,6 +495,8 @@ export default function Desktop() {
         <StartMenu
           onItemClick={handleStartMenuItem}
           onClose={() => setStartMenuOpen(false)}
+          currentUser={currentUser}
+          onLogout={logout}
         />
       )}
 
@@ -467,6 +507,12 @@ export default function Desktop() {
         onWindowClick={handleTaskbarWindowClick}
         onStartClick={() => setStartMenuOpen((prev) => !prev)}
         startMenuOpen={startMenuOpen}
+        notificationBell={
+          <Win98Notifications
+            tasks={firebaseTasks}
+            onOpenWindow={() => openWindow('tasks')}
+          />
+        }
       />
     </div>
   );
