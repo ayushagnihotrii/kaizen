@@ -446,7 +446,7 @@ export default function Desktop({
           display: 'flex',
           flexDirection: 'column',
           gap: 8,
-          zIndex: 1,
+          zIndex: 3,
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -464,13 +464,13 @@ export default function Desktop({
       </div>
 
       {/* Windows */}
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 40, zIndex: 2 }}>
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 40, zIndex: 2, pointerEvents: 'none' }}>
           {openWindows.map((win) => {
             const def = WINDOW_DEFS[win.id];
             if (!def) return null;
             return (
+              <div key={win.id} style={{ pointerEvents: 'auto' }}>
                 <Win98Window
-                  key={win.id}
                   id={win.id}
                   title={def.title}
                   isActive={activeWindowId === win.id}
@@ -486,6 +486,7 @@ export default function Desktop({
                 >
                   {renderWindowContent(win.id)}
                 </Win98Window>
+              </div>
             );
           })}
       </div>

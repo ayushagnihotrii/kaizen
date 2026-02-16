@@ -83,10 +83,26 @@ const ICONS = {
 };
 
 export default function DesktopIcon({ id, label, iconType, selected, onClick, onDoubleClick }) {
+  const lastTap = React.useRef(0);
+
+  const handleClick = (e) => {
+    e.stopPropagation();
+    const now = Date.now();
+    // Detect double-tap on touch / double-click on desktop
+    if (now - lastTap.current < 400) {
+      onDoubleClick?.(id);
+      lastTap.current = 0;
+    } else {
+      // First tap/click — select. On mobile, also open after a brief selection.
+      onClick?.(id);
+      lastTap.current = now;
+    }
+  };
+
   return (
     <div
       className={`desktop-icon ${selected ? 'selected' : ''}`}
-      onClick={(e) => { e.stopPropagation(); onClick?.(id); }}
+      onClick={handleClick}
       onDoubleClick={(e) => { e.stopPropagation(); onDoubleClick?.(id); }}
     >
       <div className="desktop-icon-img">
