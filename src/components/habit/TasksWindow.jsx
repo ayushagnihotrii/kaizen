@@ -3,6 +3,7 @@ import { format } from 'date-fns';
 
 export default function TasksWindow({
   tasks,
+  tasksLoading = false,
   onAddTask,
   onEditTask,
   onToggleComplete,
@@ -187,7 +188,12 @@ export default function TasksWindow({
       )}
 
       {/* Task list */}
-      {filteredTasks.length === 0 ? (
+      {tasksLoading ? (
+        <div style={{ textAlign: 'center', padding: 32, color: '#33FF00' }}>
+          <div style={{ fontSize: 16, marginBottom: 8 }}>⏳ LOADING TASKS...</div>
+          <div style={{ fontSize: 14, color: '#808080' }}>Syncing with Firebase...</div>
+        </div>
+      ) : filteredTasks.length === 0 ? (
         <div style={{ textAlign: 'center', padding: 32, color: '#808080' }}>
           <div style={{ fontSize: 32, marginBottom: 8 }}>📭</div>
           <div>NO {currentView === 'starred' ? 'STARRED ' : ''}TASKS FOUND</div>

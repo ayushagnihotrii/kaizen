@@ -173,6 +173,7 @@ const calculateStreak = (completionHistory) => {
 // ══════════════════════════════════════════════════
 export default function Desktop({
   firebaseTasks = [],
+  tasksLoading = false,
   onAddTask,
   onEditTask,
   onToggleComplete,
@@ -394,6 +395,7 @@ export default function Desktop({
         return (
           <TasksWindow
             tasks={firebaseTasks}
+            tasksLoading={tasksLoading}
             onAddTask={onAddTask}
             onEditTask={onEditTask}
             onToggleComplete={onToggleComplete}

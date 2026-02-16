@@ -82,8 +82,8 @@ function App() {
     return <Win98Login />;
   }
 
-  // Show loading
-  if (authLoading || tasksLoading) {
+  // Show loading only during auth check (not tasks - let Desktop handle that)
+  if (authLoading) {
     return (
       <div style={{
         position: 'fixed',
@@ -99,9 +99,6 @@ function App() {
         <div className="terminal-box" style={{ fontSize: 18, padding: 24, textAlign: 'center' }}>
           <div className="neon-text" style={{ marginBottom: 8 }}>LOADING HABIT.SYS...</div>
           <div className="neon-text-dim">Connecting to Firebase...</div>
-          <div className="neon-text-dim" style={{ marginTop: 8 }}>
-            {'['}{'█'.repeat(Math.floor((Date.now() / 200) % 20))}{'░'.repeat(20 - Math.floor((Date.now() / 200) % 20))}{']'}
-          </div>
         </div>
       </div>
     );
@@ -110,6 +107,7 @@ function App() {
   return (
     <Desktop
       firebaseTasks={tasks}
+      tasksLoading={tasksLoading}
       onAddTask={handleAddTask}
       onEditTask={handleEditTask}
       onToggleComplete={handleToggleComplete}
