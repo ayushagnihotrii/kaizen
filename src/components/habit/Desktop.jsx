@@ -10,6 +10,7 @@ import SettingsWindow from './SettingsWindow';
 import AboutWindow from './AboutWindow';
 import TasksWindow from './TasksWindow';
 import Win98ActivityWindow from './Win98ActivityWindow';
+import TodaysTaskWindow from './TodaysTaskWindow';
 import Win98Notifications from './Win98Notifications';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -88,11 +89,17 @@ const WINDOW_DEFS = {
     defaultPosition: { x: 240, y: 50 },
     defaultSize: { width: 480, height: 500 },
   },
+  todaystask: {
+    title: 'TodaysTask.exe',
+    defaultPosition: { x: 300, y: 40 },
+    defaultSize: { width: 500, height: 520 },
+  },
 };
 
 // Desktop icon definitions
 const DESKTOP_ICONS = [
   { id: 'tasks', label: 'Tasks.exe', iconType: 'tasks' },
+  { id: 'todaystask', label: 'TodaysTask.exe', iconType: 'todaystask' },
   { id: 'newhabit', label: 'NewHabit.exe', iconType: 'newhabit' },
   { id: 'habits', label: 'MyHabits.txt', iconType: 'habits' },
   { id: 'activity', label: 'Activity.exe', iconType: 'activity' },
@@ -406,6 +413,16 @@ export default function Desktop({
         );
       case 'activity':
         return <Win98ActivityWindow tasks={firebaseTasks} />;
+      case 'todaystask':
+        return (
+          <TodaysTaskWindow
+            tasks={firebaseTasks}
+            tasksLoading={tasksLoading}
+            onToggleComplete={onToggleComplete}
+            onToggleStar={onToggleStar}
+            onOpenAllTasks={() => { openWindow('tasks'); }}
+          />
+        );
       default:
         return <div>Unknown window</div>;
     }

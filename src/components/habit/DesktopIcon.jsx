@@ -80,6 +80,20 @@ const ICONS = {
       <line x1="22" y1="18" x2="24" y2="18" stroke="#00FF41" strokeWidth="2"/>
     </svg>
   ),
+  todaystask: (
+    <svg viewBox="0 0 32 32" width="40" height="40" style={{ imageRendering: 'pixelated' }}>
+      <rect x="2" y="2" width="28" height="28" fill="#1a1a2e" stroke="#FF00FF" strokeWidth="1"/>
+      <rect x="2" y="2" width="28" height="5" fill="#800080"/>
+      <text x="16" y="6" textAnchor="middle" fontSize="4" fill="#FF00FF" fontFamily="monospace">TODAY</text>
+      <rect x="6" y="10" width="4" height="4" fill="#FF00FF" stroke="#FF00FF" strokeWidth="0.5"/>
+      <text x="8" y="13" textAnchor="middle" fontSize="3" fill="#1a1a2e" fontFamily="monospace">✓</text>
+      <line x1="13" y1="12" x2="26" y2="12" stroke="#FF00FF" strokeWidth="1"/>
+      <rect x="6" y="16" width="4" height="4" fill="transparent" stroke="#FF00FF" strokeWidth="0.5"/>
+      <line x1="13" y1="18" x2="26" y2="18" stroke="#FF00FF" strokeWidth="1"/>
+      <rect x="6" y="22" width="4" height="4" fill="transparent" stroke="#FF00FF" strokeWidth="0.5"/>
+      <line x1="13" y1="24" x2="26" y2="24" stroke="#FF00FF" strokeWidth="1"/>
+    </svg>
+  ),
 };
 
 export default function DesktopIcon({ id, label, iconType, selected, onClick, onDoubleClick }) {
