@@ -62,9 +62,9 @@ body {
   position: fixed;
   inset: 0;
   background:
-    repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(51,255,0,0.03) 59px, rgba(51,255,0,0.03) 60px),
-    repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(51,255,0,0.03) 59px, rgba(51,255,0,0.03) 60px),
-    linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
+    repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(51,255,0,0.02) 59px, rgba(51,255,0,0.02) 60px),
+    repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(51,255,0,0.02) 59px, rgba(51,255,0,0.02) 60px),
+    linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)),
     url('/bg.jpg') center/cover no-repeat fixed;
   pointer-events: none;
   z-index: 0;
@@ -76,7 +76,7 @@ body {
 .crt-scanlines {
   position: fixed;
   inset: 0;
-  background: repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(0,0,0,0.15) 1px, rgba(0,0,0,0.15) 2px);
+  background: repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(0,0,0,0.08) 1px, rgba(0,0,0,0.08) 2px);
   pointer-events: none;
   z-index: 9999;
 }
@@ -531,20 +531,24 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 80px;
-  padding: 6px 4px;
+  width: 90px;
+  padding: 8px 6px;
   cursor: default;
   user-select: none;
   text-align: center;
   border: 1px solid transparent;
+  border-radius: 4px;
+  transition: all 0.15s ease;
 }
 
 .desktop-icon:hover {
-  border: 1px dotted rgba(51,255,0,0.5);
+  border: 1px dotted rgba(51,255,0,0.6);
+  background: rgba(0,0,0,0.35);
 }
 
 .desktop-icon.selected {
   border: 1px dotted var(--neon-green);
+  background: rgba(0,0,0,0.45);
 }
 
 .desktop-icon.selected .desktop-icon-label {
@@ -553,19 +557,21 @@ body {
 }
 
 .desktop-icon-img {
-  width: 40px;
-  height: 40px;
-  margin-bottom: 4px;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 5px;
   image-rendering: pixelated;
+  filter: drop-shadow(0 0 4px rgba(51,255,0,0.4)) drop-shadow(0 2px 4px rgba(0,0,0,0.6));
 }
 
 .desktop-icon-label {
-  font-size: 14px;
-  color: var(--neon-green);
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.9), 0 0 6px rgba(51,255,0,0.3);
-  padding: 1px 4px;
+  font-size: 15px;
+  color: #fff;
+  text-shadow: 1px 1px 3px rgba(0,0,0,1), -1px -1px 3px rgba(0,0,0,1), 0 0 8px rgba(0,0,0,0.9), 0 0 14px rgba(51,255,0,0.3);
+  padding: 2px 5px;
   word-break: break-all;
   line-height: 1.2;
+  font-weight: bold;
 }
 
 /* ========================================
