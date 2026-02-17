@@ -423,7 +423,7 @@ export default function Desktop({
       style={{
         position: 'fixed',
         inset: 0,
-        background: '#000',
+        background: '#0a0a0a',
         overflow: 'hidden',
         fontFamily: "'VT323', ui-monospace, 'Courier New', monospace",
       }}

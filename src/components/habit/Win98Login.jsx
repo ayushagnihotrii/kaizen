@@ -21,7 +21,7 @@ export default function Win98Login() {
       style={{
         position: 'fixed',
         inset: 0,
-        background: '#000',
+        background: '#0a0a0a',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',

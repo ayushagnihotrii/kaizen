@@ -88,12 +88,13 @@ function App() {
       <div style={{
         position: 'fixed',
         inset: 0,
-        background: '#000',
+        background: '#0a0a0a',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         fontFamily: "'VT323', monospace",
       }}>
+        <div className="desktop-bg" />
         <div className="crt-scanlines" />
         <div className="crt-grain" />
         <div className="terminal-box" style={{ fontSize: 18, padding: 24, textAlign: 'center' }}>
