@@ -88,6 +88,11 @@ export const AuthProvider = ({ children }) => {
 
     // Listen for auth state changes + handle redirect result
     useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            setCurrentUser(user);
+            setLoading(false);
+        });
+
         // Check if user is coming back from a redirect sign-in
         getRedirectResult(auth)
             .then((result) => {
@@ -102,13 +107,16 @@ export const AuthProvider = ({ children }) => {
                 }
             });
 
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            setCurrentUser(user);
+        // Safety timeout — never stay loading for more than 5 seconds
+        const timeout = setTimeout(() => {
             setLoading(false);
-        });
+        }, 5000);
 
         // Cleanup subscription on unmount
-        return unsubscribe;
+        return () => {
+            unsubscribe();
+            clearTimeout(timeout);
+        };
     }, []);
 
     const value = {
@@ -121,7 +129,7 @@ export const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider value={value}>
-            {!loading && children}
+            {children}
         </AuthContext.Provider>
     );
 };
