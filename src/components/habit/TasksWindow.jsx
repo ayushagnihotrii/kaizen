@@ -93,7 +93,7 @@ export default function TasksWindow({
         <span className="neon-text">
           {currentView === 'starred' ? 'STARRED_TASKS.EXE' : 'MY_TASKS.EXE'}
         </span>
-        <span style={{ marginLeft: 8, fontSize: 12, color: '#808080' }}>
+        <span style={{ marginLeft: 8, fontSize: 12, color: '#1a8c00' }}>
           [{filteredTasks.length} task{filteredTasks.length !== 1 ? 's' : ''}]
         </span>
       </div>
@@ -126,13 +126,13 @@ export default function TasksWindow({
 
       {/* Add/Edit form */}
       {isAdding && (
-        <div className="bevel-inset" style={{ padding: 10, background: '#d4d4d4' }}>
-          <div style={{ fontSize: 13, fontWeight: 'bold', marginBottom: 6, textTransform: 'uppercase' }}>
+        <div className="bevel-inset" style={{ padding: 10 }}>
+          <div style={{ fontSize: 13, fontWeight: 'bold', marginBottom: 6, textTransform: 'uppercase', color: '#39FF14' }}>
             {editingTask ? '✏️ Edit Task' : '➕ New Task'}
           </div>
 
           <div style={{ marginBottom: 6 }}>
-            <label style={{ fontSize: 13 }}>Title:</label>
+            <label style={{ fontSize: 13, color: '#00FF41' }}>Title:</label>
             <input
               type="text"
               className="win98-input"
@@ -144,7 +144,7 @@ export default function TasksWindow({
           </div>
 
           <div style={{ marginBottom: 6 }}>
-            <label style={{ fontSize: 13 }}>Description:</label>
+            <label style={{ fontSize: 13, color: '#00FF41' }}>Description:</label>
             <textarea
               className="win98-input"
               value={description}
@@ -157,7 +157,7 @@ export default function TasksWindow({
 
           <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
             <div style={{ flex: 1 }}>
-              <label style={{ fontSize: 13 }}>📅 Due Date:</label>
+              <label style={{ fontSize: 13, color: '#00FF41' }}>📅 Due Date:</label>
               <input
                 type="date"
                 className="win98-input"
@@ -166,7 +166,7 @@ export default function TasksWindow({
               />
             </div>
             <div style={{ flex: 1 }}>
-              <label style={{ fontSize: 13 }}>🕐 Due Time:</label>
+              <label style={{ fontSize: 13, color: '#00FF41' }}>🕐 Due Time:</label>
               <input
                 type="time"
                 className="win98-input"
@@ -191,10 +191,10 @@ export default function TasksWindow({
       {tasksLoading ? (
         <div style={{ textAlign: 'center', padding: 32, color: '#33FF00' }}>
           <div style={{ fontSize: 16, marginBottom: 8 }}>⏳ LOADING TASKS...</div>
-          <div style={{ fontSize: 14, color: '#808080' }}>Syncing with Firebase...</div>
+          <div style={{ fontSize: 14, color: '#1a8c00' }}>Syncing with Firebase...</div>
         </div>
       ) : filteredTasks.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: 32, color: '#808080' }}>
+        <div style={{ textAlign: 'center', padding: 32, color: '#1a8c00' }}>
           <div style={{ fontSize: 32, marginBottom: 8 }}>📭</div>
           <div>NO {currentView === 'starred' ? 'STARRED ' : ''}TASKS FOUND</div>
           <div style={{ fontSize: 14, marginTop: 4 }}>
@@ -202,18 +202,19 @@ export default function TasksWindow({
           </div>
         </div>
       ) : (
-        <div style={{ border: '1px solid #808080' }}>
+        <div style={{ border: '1px solid #1a2a1a' }}>
           {/* Header row */}
           <div style={{
             display: 'flex',
             alignItems: 'center',
             padding: '3px 6px',
-            background: '#d0d0d0',
-            borderBottom: '1px solid #808080',
+            background: '#0a1a0a',
+            borderBottom: '1px solid #00FF41',
             fontSize: 12,
             fontWeight: 'bold',
             textTransform: 'uppercase',
             gap: 6,
+            color: '#39FF14',
           }}>
             <span style={{ width: 22 }}>✓</span>
             <span style={{ flex: 1 }}>TASK</span>
@@ -247,12 +248,12 @@ export default function TasksWindow({
                   {task.title}
                 </div>
                 {task.description && (
-                  <div style={{ fontSize: 13, color: '#666', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  <div style={{ fontSize: 13, color: '#1a8c00', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {task.description}
                   </div>
                 )}
                 {(task.dueDate || task.dueTime) && (
-                  <div style={{ display: 'flex', gap: 8, fontSize: 12, color: '#808080', marginTop: 2 }}>
+                  <div style={{ display: 'flex', gap: 8, fontSize: 12, color: '#1a8c00', marginTop: 2 }}>
                     {task.dueDate && <span>📅 {formatDate(task.dueDate)}</span>}
                     {task.dueTime && <span>🕐 {formatTime(task.dueTime)}</span>}
                   </div>
@@ -266,7 +267,9 @@ export default function TasksWindow({
                   padding: '1px 4px',
                   fontSize: 14,
                   minWidth: 'auto',
-                  background: task.isStarred ? '#FFFF00' : undefined,
+                  background: task.isStarred ? '#332200' : undefined,
+                  borderColor: task.isStarred ? '#FFFF00' : undefined,
+                  color: task.isStarred ? '#FFFF00' : undefined,
                 }}
                 onClick={() => onToggleStar(task.id)}
                 title={task.isStarred ? 'Remove star' : 'Add star'}
@@ -294,7 +297,7 @@ export default function TasksWindow({
         fontSize: 12,
         display: 'flex',
         justifyContent: 'space-between',
-        color: '#000',
+        color: '#1a8c00',
       }}>
         <span>
           {filteredTasks.filter((t) => t.isCompleted).length}/{filteredTasks.length} completed

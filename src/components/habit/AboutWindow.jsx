@@ -6,16 +6,15 @@ export default function AboutWindow() {
       {/* Logo */}
       <div style={{ padding: '16px 0' }}>
         <div className="about-logo">HABIT.SYS</div>
-        <div style={{ fontSize: 14, color: '#808080', marginTop: 4 }}>
+        <div style={{ fontSize: 14, color: '#1a8c00', marginTop: 4 }}>
           VERSION 1.0.0 BUILD 98
         </div>
       </div>
 
       {/* Divider */}
       <div style={{
-        height: 2,
-        borderTop: '1px solid #808080',
-        borderBottom: '1px solid #FFFFFF',
+        height: 1,
+        background: '#1a2a1a',
         margin: '0 20px',
       }} />
 

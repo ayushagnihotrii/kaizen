@@ -32,10 +32,9 @@ export default function Taskbar({ windows, activeWindowId, onWindowClick, onStar
 
       {/* Vertical divider */}
       <div style={{
-        width: 2,
+        width: 1,
         height: 28,
-        borderLeft: '1px solid #808080',
-        borderRight: '1px solid #fff',
+        background: '#1a2a1a',
         margin: '0 2px',
       }} />
 
@@ -55,10 +54,9 @@ export default function Taskbar({ windows, activeWindowId, onWindowClick, onStar
 
       {/* System Tray / Clock */}
       <div style={{
-        width: 2,
+        width: 1,
         height: 28,
-        borderLeft: '1px solid #808080',
-        borderRight: '1px solid #fff',
+        background: '#1a2a1a',
         margin: '0 2px',
       }} />
       <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>

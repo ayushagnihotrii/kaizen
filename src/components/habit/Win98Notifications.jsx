@@ -124,8 +124,8 @@ export default function Win98Notifications({ tasks = [], onOpenWindow }) {
                 <div style={{
                   padding: 6,
                   marginBottom: 6,
-                  background: '#FFFFCC',
-                  border: '1px solid #808080',
+                  background: '#0a1a0a',
+                  border: '1px solid #1a2a1a',
                   fontSize: 12,
                 }}>
                   <div>Enable browser notifications?</div>
@@ -140,7 +140,7 @@ export default function Win98Notifications({ tasks = [], onOpenWindow }) {
               )}
 
               {upcomingTasks.length === 0 ? (
-                <div style={{ textAlign: 'center', padding: 16, color: '#808080', fontSize: 14 }}>
+                <div style={{ textAlign: 'center', padding: 16, color: '#1a8c00', fontSize: 14 }}>
                   <div style={{ fontSize: 24, marginBottom: 4 }}>🔔</div>
                   <div>No upcoming tasks</div>
                   <div style={{ fontSize: 12 }}>Tasks due within 1 hour appear here</div>
@@ -151,7 +151,7 @@ export default function Win98Notifications({ tasks = [], onOpenWindow }) {
                     key={task.id}
                     style={{
                       padding: 6,
-                      borderBottom: '1px solid #a0a0a0',
+                      borderBottom: '1px solid #1a2a1a',
                       fontSize: 14,
                     }}
                   >
@@ -159,7 +159,7 @@ export default function Win98Notifications({ tasks = [], onOpenWindow }) {
                     {task.description && (
                       <div style={{
                         fontSize: 12,
-                        color: '#666',
+                        color: '#1a8c00',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap',

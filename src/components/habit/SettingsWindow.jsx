@@ -111,8 +111,8 @@ export default function SettingsWindow({ settings, onUpdateSettings, onExport, o
               🗑️ Clear All Data
             </button>
           ) : (
-            <div className="bevel-inset" style={{ padding: 8, background: '#FFFFCC' }}>
-              <div style={{ marginBottom: 6, fontWeight: 'bold', color: '#FF4444' }}>
+            <div className="bevel-inset" style={{ padding: 8 }}>
+              <div style={{ marginBottom: 6, fontWeight: 'bold', color: '#FF4444', textShadow: '0 0 4px rgba(255,68,68,0.4)' }}>
                 ⚠️ ARE YOU SURE? THIS CANNOT BE UNDONE!
               </div>
               <div style={{ display: 'flex', gap: 8 }}>

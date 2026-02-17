@@ -47,7 +47,7 @@ export default function HabitListWindow({ habits, onToggleHabit, onDeleteHabit }
         <div style={{
           textAlign: 'center',
           padding: 32,
-          color: '#808080',
+          color: '#1a8c00',
           fontSize: 16,
         }}>
           <div style={{ fontSize: 32, marginBottom: 8 }}>📭</div>
@@ -57,18 +57,19 @@ export default function HabitListWindow({ habits, onToggleHabit, onDeleteHabit }
           </div>
         </div>
       ) : (
-        <div style={{ border: '1px solid #808080' }}>
+        <div style={{ border: '1px solid #1a2a1a' }}>
           {/* List header */}
           <div style={{
             display: 'flex',
             alignItems: 'center',
             padding: '4px 8px',
-            background: '#d0d0d0',
-            borderBottom: '1px solid #808080',
+            background: '#0a1a0a',
+            borderBottom: '1px solid #00FF41',
             fontSize: 12,
             fontWeight: 'bold',
             textTransform: 'uppercase',
             gap: 10,
+            color: '#39FF14',
           }}>
             <span style={{ width: 24 }}>✓</span>
             <span style={{ flex: 1 }}>HABIT</span>
@@ -96,8 +97,8 @@ export default function HabitListWindow({ habits, onToggleHabit, onDeleteHabit }
                 <span
                   className="habit-name"
                   style={{
-                    color: habit.color || '#000',
-                    textShadow: isCompleted ? 'none' : `0 0 2px ${habit.color || '#33FF00'}40`,
+                    color: habit.color || '#00FF41',
+                    textShadow: isCompleted ? 'none' : `0 0 4px ${habit.color || '#33FF00'}60`,
                   }}
                 >
                   {habit.name}
@@ -146,7 +147,7 @@ export default function HabitListWindow({ habits, onToggleHabit, onDeleteHabit }
           <div style={{ fontSize: 12, marginBottom: 4, textTransform: 'uppercase' }}>
             Today's Progress:
           </div>
-          <div className="bevel-inset" style={{ height: 20, background: '#fff', position: 'relative' }}>
+          <div className="bevel-inset" style={{ height: 20, background: '#0a0a0a', position: 'relative' }}>
             <div
               style={{
                 height: '100%',
@@ -162,7 +163,7 @@ export default function HabitListWindow({ habits, onToggleHabit, onDeleteHabit }
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: 12,
-              color: '#000',
+              color: '#00FF41',
               fontWeight: 'bold',
               mixBlendMode: 'difference',
             }}>

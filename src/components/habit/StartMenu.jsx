@@ -37,7 +37,7 @@ export default function StartMenu({ onItemClick, onClose, currentUser, onLogout 
                   alignItems: 'center',
                   gap: 8,
                   padding: '6px 12px',
-                  borderBottom: '1px solid #808080',
+                  borderBottom: '1px solid #1a2a1a',
                   marginBottom: 4,
                 }}
               >
@@ -49,7 +49,7 @@ export default function StartMenu({ onItemClick, onClose, currentUser, onLogout 
                       width: 24,
                       height: 24,
                       borderRadius: 2,
-                      border: '1px solid #808080',
+                      border: '1px solid #2a2a2a',
                       imageRendering: 'pixelated',
                     }}
                   />
@@ -59,7 +59,7 @@ export default function StartMenu({ onItemClick, onClose, currentUser, onLogout 
                 <div style={{ overflow: 'hidden' }}>
                   <div style={{
                     fontSize: 14,
-                    color: '#fff',
+                    color: '#00FF41',
                     whiteSpace: 'nowrap',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
@@ -69,7 +69,7 @@ export default function StartMenu({ onItemClick, onClose, currentUser, onLogout 
                   </div>
                   <div style={{
                     fontSize: 11,
-                    color: '#808080',
+                    color: '#1a8c00',
                     whiteSpace: 'nowrap',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',

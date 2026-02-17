@@ -96,7 +96,7 @@ export default function Win98ActivityWindow({ tasks = [] }) {
         <button className="bevel-button" onClick={goToPreviousMonth} style={{ padding: '2px 10px' }}>
           ◀ PREV
         </button>
-        <div style={{ fontWeight: 'bold', fontSize: 18, color: '#000' }}>
+        <div style={{ fontWeight: 'bold', fontSize: 18, color: '#00FF41', textShadow: '0 0 6px rgba(0,255,65,0.4)' }}>
           📅 {monthYear}
         </div>
         <button
@@ -122,7 +122,7 @@ export default function Win98ActivityWindow({ tasks = [] }) {
         textAlign: 'center',
         fontSize: 12,
         fontWeight: 'bold',
-        color: '#666',
+        color: '#1a8c00',
       }}>
         {DAYS.map((d) => (
           <div key={d}>{d}</div>
@@ -162,7 +162,7 @@ export default function Win98ActivityWindow({ tasks = [] }) {
             >
               <span style={{
                 fontSize: 12,
-                color: cell.taskCount > 0 ? '#fff' : '#555',
+                color: cell.taskCount > 0 ? '#fff' : '#333',
                 fontWeight: isToday ? 'bold' : 'normal',
               }}>
                 {cell.day}
@@ -184,8 +184,8 @@ export default function Win98ActivityWindow({ tasks = [] }) {
         justifyContent: 'center',
         gap: 6,
         fontSize: 12,
-        color: '#808080',
-        borderTop: '1px solid #808080',
+        color: '#1a8c00',
+        borderTop: '1px solid #1a2a1a',
         paddingTop: 8,
       }}>
         <span>LESS</span>
@@ -196,7 +196,7 @@ export default function Win98ActivityWindow({ tasks = [] }) {
               width: 16,
               height: 16,
               background: getIntensityColor(count),
-              border: '1px solid #555',
+              border: '1px solid #2a2a2a',
             }}
           />
         ))}
