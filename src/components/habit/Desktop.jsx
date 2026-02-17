@@ -75,7 +75,7 @@ const WINDOW_DEFS = {
     defaultSize: { width: 420, height: 500 },
   },
   about: {
-    title: 'About - HABIT.SYS',
+    title: 'About - KAIZEN',
     defaultPosition: { x: 340, y: 80 },
     defaultSize: { width: 400, height: 440 },
   },

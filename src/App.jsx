@@ -164,7 +164,7 @@ function App() {
         <div className="crt-scanlines" />
         <div className="crt-grain" />
         <div className="terminal-box" style={{ fontSize: 18, padding: 24, textAlign: 'center' }}>
-          <div className="neon-text" style={{ marginBottom: 8 }}>LOADING HABIT.SYS...</div>
+          <div className="neon-text" style={{ marginBottom: 8 }}>LOADING KAIZEN...</div>
           <div className="neon-text-dim">Connecting to Firebase...</div>
         </div>
       </div>

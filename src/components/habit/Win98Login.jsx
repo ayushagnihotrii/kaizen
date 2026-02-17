@@ -89,7 +89,7 @@ export default function Win98Login() {
             textShadow: '0 0 6px rgba(0,255,65,0.4)',
           }}>
             <span style={{ fontSize: 14 }}>🔐</span>
-            Welcome to HABIT.SYS - Login
+            Welcome to KAIZEN - Login
           </div>
           <div style={{ display: 'flex', gap: 2 }}>
             {['_', '□', '×'].map((ch, i) => (
@@ -122,7 +122,7 @@ export default function Win98Login() {
         {/* Window Content — dark terminal body */}
         <div style={{ padding: 20, background: '#050d05' }}>
 
-          {/* ── ASCII Logo ── */}
+          {/* ── Kaizen Logo ── */}
           <div
             style={{
               background: '#000',
@@ -143,34 +143,42 @@ export default function Win98Login() {
               pointerEvents: 'none',
               zIndex: 1,
             }} />
-            <pre style={{
-              color: '#00FF41',
-              fontSize: 13,
-              lineHeight: 1.15,
-              fontFamily: "'VT323', monospace",
-              textShadow: '0 0 8px #00FF41, 0 0 20px rgba(0,255,65,0.4), 0 0 40px rgba(0,255,65,0.15)',
-              margin: 0,
-              position: 'relative',
-              zIndex: 2,
-              letterSpacing: 0.5,
-            }}>
-{` ██╗  ██╗ █████╗ ██████╗ ██╗████████╗
- ██║  ██║██╔══██╗██╔══██╗██║╚══██╔══╝
- ███████║███████║██████╔╝██║   ██║
- ██╔══██║██╔══██║██╔══██╗██║   ██║
- ██║  ██║██║  ██║██████╔╝██║   ██║
- ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚═╝   ╚═╝`}
-            </pre>
+            <img
+              src="/logo.jpg"
+              alt="Kaizen"
+              style={{
+                width: 120,
+                height: 120,
+                borderRadius: 8,
+                margin: '0 auto 10px',
+                display: 'block',
+                border: '2px solid #00FF41',
+                boxShadow: '0 0 16px rgba(0,255,65,0.3), 0 0 40px rgba(0,255,65,0.1)',
+                position: 'relative',
+                zIndex: 2,
+              }}
+            />
             <div style={{
               color: '#39FF14',
-              fontSize: 16,
+              fontSize: 28,
               letterSpacing: 8,
-              marginTop: 8,
               textShadow: '0 0 10px #39FF14, 0 0 25px rgba(57,255,20,0.4)',
               position: 'relative',
               zIndex: 2,
+              fontWeight: 'bold',
             }}>
-              S Y S T E M &nbsp; v 2 . 0
+              K A I Z E N
+            </div>
+            <div style={{
+              color: '#00FF41',
+              fontSize: 16,
+              letterSpacing: 4,
+              marginTop: 4,
+              textShadow: '0 0 6px rgba(0,255,65,0.4)',
+              position: 'relative',
+              zIndex: 2,
+            }}>
+              改 善 &nbsp; S Y S T E M &nbsp; v 2 . 0
             </div>
           </div>
 
@@ -188,7 +196,7 @@ export default function Win98Login() {
             }}
           >
             {[
-              { text: 'HABIT.SYS v2.0 LOADED', delay: 1 },
+              { text: 'KAIZEN.SYS v2.0 LOADED', delay: 1 },
               { text: 'CRT DISPLAY: ACTIVE', delay: 2 },
               { text: 'FIREBASE AUTH: READY', delay: 3 },
               { text: 'CLOUD SYNC: STANDBY', delay: 4 },

@@ -5,9 +5,22 @@ export default function AboutWindow() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12, textAlign: 'center' }}>
       {/* Logo */}
       <div style={{ padding: '16px 0' }}>
-        <div className="about-logo">HABIT.SYS</div>
+        <img
+          src="/logo.jpg"
+          alt="Kaizen"
+          style={{
+            width: 80,
+            height: 80,
+            borderRadius: 8,
+            margin: '0 auto 8px',
+            display: 'block',
+            border: '2px solid #00FF41',
+            boxShadow: '0 0 12px rgba(0,255,65,0.3)',
+          }}
+        />
+        <div className="about-logo">KAIZEN 改善</div>
         <div style={{ fontSize: 14, color: '#1a8c00', marginTop: 4 }}>
-          VERSION 1.0.0 BUILD 98
+          VERSION 2.0.0 BUILD 98
         </div>
       </div>
 
@@ -21,22 +34,23 @@ export default function AboutWindow() {
       {/* Info */}
       <div className="terminal-box" style={{ textAlign: 'left', fontSize: 14, lineHeight: 1.5 }}>
 {`╔══════════════════════════════════════╗
-║    HABIT TRACKER SYSTEM v1.0         ║
+║    KAIZEN 改善 SYSTEM v2.0            ║
 ║                                      ║
-║    Retro-Futuristic Habit Tracking   ║
+║    Retro-Futuristic Habit &           ║
+║    Task Tracking System              ║
 ║    with Windows 98 Aesthetics        ║
 ║                                      ║
 ║    Built with:                       ║
-║    ├─ React.js                       ║
+║    ├─ React.js + Vite                ║
+║    ├─ Firebase Auth & Firestore      ║
 ║    ├─ Tailwind CSS                   ║
-║    ├─ react-draggable                ║
-║    └─ localStorage API               ║
+║    └─ react-draggable                ║
 ║                                      ║
-║    © 2026 HABIT SYSTEM               ║
+║    © 2026 KAIZEN SYSTEM               ║
 ║    ALL RIGHTS RESERVED               ║
 ║                                      ║
-║    "TRACK YOUR HABITS.               ║
-║     BUILD YOUR FUTURE."              ║
+║    "改善 - CONTINUOUS                  ║
+║     IMPROVEMENT."                    ║
 ║                                      ║
 ╚══════════════════════════════════════╝`}
       </div>

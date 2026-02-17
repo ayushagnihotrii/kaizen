@@ -422,8 +422,9 @@ body {
 .start-button .start-logo {
   width: 20px;
   height: 20px;
-  background: linear-gradient(135deg, #ff0000 25%, #00ff00 25%, #00ff00 50%, #0000ff 50%, #0000ff 75%, #ffff00 75%);
-  image-rendering: pixelated;
+  background: url('/favicon.png') center/cover no-repeat;
+  border-radius: 2px;
+  image-rendering: auto;
 }
 
 .taskbar-windows {
