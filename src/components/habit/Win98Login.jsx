@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 
 export default function Win98Login() {
-  const { login, error } = useAuth();
+  const { login, loginAsGuest, error } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [bootStep, setBootStep] = useState(0);
 
@@ -336,6 +336,64 @@ export default function Win98Login() {
                 </>
               )}
             </button>
+          </div>
+
+          {/* ── OR Divider ── */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 12,
+            margin: '14px 0',
+          }}>
+            <div style={{ flex: 1, height: 1, background: '#1a3a1a' }} />
+            <span style={{ color: '#1a8c00', fontSize: 14, textTransform: 'uppercase', letterSpacing: 2 }}>or</span>
+            <div style={{ flex: 1, height: 1, background: '#1a3a1a' }} />
+          </div>
+
+          {/* ── Guest Mode Button ── */}
+          <button
+            onClick={loginAsGuest}
+            disabled={isLoading}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 10,
+              width: '100%',
+              padding: '12px 16px',
+              fontSize: 20,
+              fontFamily: "'VT323', monospace",
+              background: '#111',
+              color: '#FF00FF',
+              border: '2px solid #FF00FF',
+              cursor: 'pointer',
+              textTransform: 'uppercase',
+              letterSpacing: 1,
+              textShadow: '0 0 8px rgba(255,0,255,0.5)',
+              boxShadow: '0 0 8px rgba(255,0,255,0.15), inset 0 0 12px rgba(255,0,255,0.05)',
+              transition: 'all 0.2s',
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.background = '#1a001a';
+              e.target.style.borderColor = '#FF44FF';
+              e.target.style.boxShadow = '0 0 16px rgba(255,0,255,0.3), inset 0 0 20px rgba(255,0,255,0.08)';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.background = '#111';
+              e.target.style.borderColor = '#FF00FF';
+              e.target.style.boxShadow = '0 0 8px rgba(255,0,255,0.15), inset 0 0 12px rgba(255,0,255,0.05)';
+            }}
+          >
+            👤 CONTINUE AS GUEST
+          </button>
+
+          <div style={{
+            marginTop: 8,
+            textAlign: 'center',
+            fontSize: 13,
+            color: '#804080',
+          }}>
+            ⚠ Guest data is stored locally and won't sync across devices
           </div>
 
           {/* ── Footer ── */}

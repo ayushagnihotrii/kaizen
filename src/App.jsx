@@ -5,15 +5,36 @@ import Desktop from './components/habit/Desktop';
 import Win98Login from './components/habit/Win98Login';
 import './index.css';
 
+const GUEST_TASKS_KEY = 'habitTracker_guestTasks';
+
+const loadGuestTasks = () => {
+  try {
+    const raw = localStorage.getItem(GUEST_TASKS_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+};
+
+const saveGuestTasks = (tasks) => {
+  localStorage.setItem(GUEST_TASKS_KEY, JSON.stringify(tasks));
+};
+
 function App() {
-  const { currentUser, loading: authLoading } = useAuth();
+  const { currentUser, loading: authLoading, isGuest } = useAuth();
   const [tasks, setTasks] = useState([]);
   const [tasksLoading, setTasksLoading] = useState(true);
 
-  // Real-time tasks listener
+  // Real-time tasks listener (Firebase) or load from localStorage (Guest)
   useEffect(() => {
     if (!currentUser) {
       setTasks([]);
+      setTasksLoading(false);
+      return;
+    }
+
+    if (isGuest) {
+      setTasks(loadGuestTasks());
       setTasksLoading(false);
       return;
     }
@@ -26,10 +47,31 @@ function App() {
     });
 
     return () => unsubscribe();
-  }, [currentUser]);
+  }, [currentUser, isGuest]);
+
+  // Save guest tasks whenever they change
+  useEffect(() => {
+    if (isGuest && currentUser) {
+      saveGuestTasks(tasks);
+    }
+  }, [tasks, isGuest, currentUser]);
 
   // Add or edit task
   const handleAddTask = async (taskData) => {
+    if (isGuest) {
+      const newTask = {
+        id: 'guest_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
+        title: taskData.title,
+        description: taskData.description || '',
+        dueDate: taskData.dueDate || null,
+        dueTime: taskData.dueTime || null,
+        isCompleted: false,
+        isStarred: false,
+        createdAt: new Date().toISOString(),
+      };
+      setTasks((prev) => [newTask, ...prev]);
+      return;
+    }
     try {
       await addTask(currentUser.uid, {
         title: taskData.title,
@@ -43,6 +85,16 @@ function App() {
   };
 
   const handleEditTask = async (taskData) => {
+    if (isGuest) {
+      setTasks((prev) =>
+        prev.map((t) =>
+          t.id === taskData.id
+            ? { ...t, title: taskData.title, description: taskData.description, dueDate: taskData.dueDate, dueTime: taskData.dueTime }
+            : t
+        )
+      );
+      return;
+    }
     try {
       await updateTask(taskData.id, {
         title: taskData.title,
@@ -57,23 +109,37 @@ function App() {
 
   const handleToggleComplete = async (taskId) => {
     const task = tasks.find((t) => t.id === taskId);
-    if (task) {
-      try {
-        await toggleComplete(taskId, !task.isCompleted);
-      } catch (error) {
-        console.error('Error toggling task completion:', error);
-      }
+    if (!task) return;
+    if (isGuest) {
+      setTasks((prev) =>
+        prev.map((t) =>
+          t.id === taskId ? { ...t, isCompleted: !t.isCompleted, completedAt: !t.isCompleted ? new Date().toISOString() : null } : t
+        )
+      );
+      return;
+    }
+    try {
+      await toggleComplete(taskId, !task.isCompleted);
+    } catch (error) {
+      console.error('Error toggling task completion:', error);
     }
   };
 
   const handleToggleStar = async (taskId) => {
     const task = tasks.find((t) => t.id === taskId);
-    if (task) {
-      try {
-        await toggleStar(taskId, !task.isStarred);
-      } catch (error) {
-        console.error('Error toggling task star:', error);
-      }
+    if (!task) return;
+    if (isGuest) {
+      setTasks((prev) =>
+        prev.map((t) =>
+          t.id === taskId ? { ...t, isStarred: !t.isStarred } : t
+        )
+      );
+      return;
+    }
+    try {
+      await toggleStar(taskId, !task.isStarred);
+    } catch (error) {
+      console.error('Error toggling task star:', error);
     }
   };
 

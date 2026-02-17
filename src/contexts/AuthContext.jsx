@@ -20,11 +20,23 @@ export const useAuth = () => {
     return context;
 };
 
+// Guest user object
+const GUEST_USER = {
+    uid: 'guest',
+    displayName: 'Guest User',
+    email: 'guest@local',
+    photoURL: null,
+    isGuest: true,
+};
+
+const GUEST_TASKS_KEY = 'habitTracker_guestTasks';
+
 // Auth Provider Component
 export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [isGuest, setIsGuest] = useState(false);
 
     // Sign in with Google — try popup first, fallback to redirect
     const login = async () => {
@@ -54,6 +66,14 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    // Sign in as guest (no Firebase)
+    const loginAsGuest = () => {
+        setError(null);
+        setIsGuest(true);
+        setCurrentUser(GUEST_USER);
+        setLoading(false);
+    };
+
     // Human-readable error messages
     const getReadableError = (error) => {
         switch (error.code) {
@@ -78,6 +98,11 @@ export const AuthProvider = ({ children }) => {
     const logout = async () => {
         try {
             setError(null);
+            if (isGuest) {
+                setIsGuest(false);
+                setCurrentUser(null);
+                return;
+            }
             await signOut(auth);
         } catch (error) {
             console.error('Logout error:', error);
@@ -124,7 +149,9 @@ export const AuthProvider = ({ children }) => {
         loading,
         error,
         login,
+        loginAsGuest,
         logout,
+        isGuest,
     };
 
     return (
