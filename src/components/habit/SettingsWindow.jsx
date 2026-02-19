@@ -1,7 +1,17 @@
 import React, { useState } from 'react';
 
+const WALLPAPERS = [
+  { url: '/bg.jpg', label: 'Default' },
+  { url: 'https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?w=1920&q=80', label: 'Dark Waves' },
+  { url: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80', label: 'Earth Night' },
+  { url: 'https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?w=1920&q=80', label: 'Galaxy' },
+  { url: 'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=1920&q=80', label: 'Starry Night' },
+  { url: 'https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?w=1920&q=80', label: 'Neon City' },
+];
+
 export default function SettingsWindow({ settings, onUpdateSettings, onExport, onImport, onClearData }) {
   const [showConfirmClear, setShowConfirmClear] = useState(false);
+  const [customWallpaperUrl, setCustomWallpaperUrl] = useState('');
 
   const handleImportClick = () => {
     const input = document.createElement('input');
@@ -86,6 +96,75 @@ export default function SettingsWindow({ settings, onUpdateSettings, onExport, o
             />
             <span>CRT Vignette</span>
           </label>
+        </div>
+      </div>
+
+      {/* Wallpaper */}
+      <div className="win98-groupbox">
+        <span className="win98-groupbox-label">Wallpaper</span>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6, marginBottom: 8 }}>
+          {WALLPAPERS.map((wp) => (
+            <div
+              key={wp.url}
+              onClick={() => onUpdateSettings({ ...settings, wallpaper: wp.url })}
+              style={{
+                cursor: 'pointer',
+                border: settings.wallpaper === wp.url ? '2px solid #00FF41' : '2px solid #2a2a2a',
+                boxShadow: settings.wallpaper === wp.url ? '0 0 8px rgba(0,255,65,0.4)' : 'none',
+                overflow: 'hidden',
+                position: 'relative',
+                height: 52,
+                background: '#000',
+              }}
+            >
+              <img
+                src={wp.url}
+                alt={wp.label}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  opacity: 0.8,
+                  imageRendering: 'auto',
+                }}
+                loading="lazy"
+              />
+              <div style={{
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                background: 'rgba(0,0,0,0.7)',
+                fontSize: 11,
+                padding: '1px 4px',
+                textAlign: 'center',
+                color: settings.wallpaper === wp.url ? '#00FF41' : '#888',
+              }}>
+                {wp.label}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div style={{ display: 'flex', gap: 6 }}>
+          <input
+            type="text"
+            className="win98-input"
+            placeholder="Custom URL..."
+            value={customWallpaperUrl}
+            onChange={(e) => setCustomWallpaperUrl(e.target.value)}
+            style={{ flex: 1, fontSize: 13 }}
+          />
+          <button
+            className="bevel-button"
+            style={{ fontSize: 13, padding: '2px 8px' }}
+            onClick={() => {
+              if (customWallpaperUrl.trim()) {
+                onUpdateSettings({ ...settings, wallpaper: customWallpaperUrl.trim() });
+              }
+            }}
+          >
+            SET
+          </button>
         </div>
       </div>
 

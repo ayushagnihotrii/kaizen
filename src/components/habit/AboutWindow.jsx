@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function AboutWindow() {
+export default function AboutWindow({ onClose }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12, textAlign: 'center' }}>
       {/* Logo */}
@@ -55,7 +55,7 @@ export default function AboutWindow() {
 ╚══════════════════════════════════════╝`}
       </div>
 
-      <button className="bevel-button" style={{ alignSelf: 'center', minWidth: 100 }}>
+      <button className="bevel-button" style={{ alignSelf: 'center', minWidth: 100 }} onClick={onClose}>
         OK
       </button>
     </div>

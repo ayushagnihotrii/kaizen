@@ -61,11 +61,15 @@ body {
 .desktop-bg {
   position: fixed;
   inset: 0;
-  background:
+  background-size: 60px 60px, 60px 60px, cover, cover;
+  background-position: center;
+  background-repeat: repeat, repeat, no-repeat, no-repeat;
+  background-attachment: fixed;
+  background-image:
     repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(51,255,0,0.02) 59px, rgba(51,255,0,0.02) 60px),
     repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(51,255,0,0.02) 59px, rgba(51,255,0,0.02) 60px),
     linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)),
-    url('/bg.jpg') center/cover no-repeat fixed;
+    url('/bg.jpg');
   pointer-events: none;
   z-index: 0;
 }
@@ -433,6 +437,13 @@ body {
   flex: 1;
   overflow-x: auto;
   padding: 0 4px;
+  mask-image: linear-gradient(90deg, transparent, black 16px, black calc(100% - 16px), transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 16px, black calc(100% - 16px), transparent);
+  scrollbar-width: none;
+}
+
+.taskbar-windows::-webkit-scrollbar {
+  display: none;
 }
 
 .taskbar-window-btn {
@@ -547,6 +558,15 @@ body {
   background: rgba(0,0,0,0.35);
 }
 
+.desktop-icon:hover .desktop-icon-img {
+  filter: drop-shadow(0 0 8px rgba(51,255,0,0.7)) drop-shadow(0 0 16px rgba(51,255,0,0.4)) drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+  transform: scale(1.05);
+}
+
+.desktop-icon-img {
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+
 .desktop-icon.selected {
   border: 1px dotted var(--neon-green);
   background: rgba(0,0,0,0.45);
@@ -573,6 +593,22 @@ body {
   word-break: break-all;
   line-height: 1.2;
   font-weight: bold;
+}
+
+/* ========================================
+   WIDGET SCROLLBAR (MAGENTA THEME)
+   ======================================== */
+.widget-scroll::-webkit-scrollbar { width: 8px; }
+.widget-scroll::-webkit-scrollbar-track { background: #0a0a0a; }
+.widget-scroll::-webkit-scrollbar-thumb {
+  background: #2a0a2a;
+  border: 1px solid #FF00FF;
+}
+.widget-scroll::-webkit-scrollbar-thumb:hover {
+  background: #4a1a4a;
+}
+.widget-scroll::-webkit-scrollbar-button {
+  display: none;
 }
 
 /* ========================================
@@ -729,12 +765,299 @@ body {
   100% { opacity: 1; transform: scale(1); }
 }
 
+@keyframes windowMinimize {
+  0% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.3) translateY(100vh); }
+}
+
+@keyframes windowRestore {
+  0% { opacity: 0; transform: scale(0.3) translateY(100vh); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
 .window-open {
   animation: bootUp 0.15s ease-out;
 }
 
+.window-minimizing {
+  animation: windowMinimize 0.2s ease-in forwards;
+  pointer-events: none;
+}
+
+.window-restoring {
+  animation: windowRestore 0.2s ease-out forwards;
+}
+
 .window-minimized {
   display: none !important;
+}
+
+/* ========================================
+   WINDOW RESIZE HANDLES
+   ======================================== */
+.win98-resize-handle {
+  position: absolute;
+  z-index: 10;
+}
+
+.win98-resize-handle.resize-right {
+  top: 28px;
+  right: -3px;
+  width: 6px;
+  bottom: 0;
+  cursor: ew-resize;
+}
+
+.win98-resize-handle.resize-bottom {
+  bottom: -3px;
+  left: 0;
+  right: 0;
+  height: 6px;
+  cursor: ns-resize;
+}
+
+.win98-resize-handle.resize-corner {
+  bottom: -3px;
+  right: -3px;
+  width: 14px;
+  height: 14px;
+  cursor: nwse-resize;
+}
+
+.win98-resize-handle:hover {
+  background: rgba(0,255,65,0.1);
+}
+
+.win98-resize-corner-indicator {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 10px;
+  height: 10px;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.win98-resize-corner-indicator::before,
+.win98-resize-corner-indicator::after {
+  content: '';
+  position: absolute;
+  background: #00FF41;
+}
+
+.win98-resize-corner-indicator::before {
+  bottom: 0;
+  right: 0;
+  width: 8px;
+  height: 2px;
+}
+
+.win98-resize-corner-indicator::after {
+  bottom: 0;
+  right: 0;
+  width: 2px;
+  height: 8px;
+}
+
+/* ========================================
+   CONTEXT MENU
+   ======================================== */
+.context-menu {
+  position: fixed;
+  z-index: 99999;
+  background: #0a0d0a;
+  border: 1px solid #00FF41;
+  box-shadow: 0 0 20px rgba(0,255,65,0.15), 4px 4px 0 rgba(0,0,0,0.5);
+  min-width: 180px;
+  padding: 4px 0;
+  font-family: 'VT323', monospace;
+  font-size: 16px;
+  animation: bootUp 0.1s ease-out;
+}
+
+.context-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 16px;
+  color: #00FF41;
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.context-menu-item:hover {
+  background: #112211;
+  color: #39FF14;
+  text-shadow: 0 0 6px rgba(0,255,65,0.5);
+}
+
+.context-menu-item.disabled {
+  color: #1a3a1a;
+  cursor: not-allowed;
+}
+
+.context-menu-item.disabled:hover {
+  background: transparent;
+  text-shadow: none;
+}
+
+.context-menu-item.danger {
+  color: #FF4444;
+}
+
+.context-menu-item.danger:hover {
+  background: rgba(255,68,68,0.1);
+  text-shadow: 0 0 6px rgba(255,68,68,0.4);
+}
+
+.context-menu-divider {
+  height: 1px;
+  margin: 3px 8px;
+  background: #1a2a1a;
+}
+
+/* ========================================
+   BOOT SCREEN
+   ======================================== */
+@keyframes bootScreenFadeOut {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.boot-screen {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'VT323', monospace;
+}
+
+.boot-screen.fade-out {
+  animation: bootScreenFadeOut 0.5s ease forwards;
+  pointer-events: none;
+}
+
+.boot-line {
+  font-size: 18px;
+  color: #00FF41;
+  text-shadow: 0 0 6px rgba(0,255,65,0.5);
+  line-height: 2;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.boot-progress {
+  width: 300px;
+  height: 6px;
+  background: #1a1a1a;
+  margin-top: 24px;
+  overflow: hidden;
+  border: 1px solid #1a3a1a;
+}
+
+.boot-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #006600, #00FF41);
+  box-shadow: 0 0 8px rgba(0,255,65,0.5);
+  transition: width 0.3s ease;
+}
+
+/* ========================================
+   TASKBAR CALENDAR POPUP
+   ======================================== */
+.taskbar-calendar {
+  position: absolute;
+  bottom: 44px;
+  right: 0;
+  z-index: 9992;
+  background: #0a0d0a;
+  border: 1px solid #00FF41;
+  box-shadow: 0 0 20px rgba(0,255,65,0.15), 0 0 40px rgba(0,0,0,0.8);
+  padding: 10px;
+  min-width: 260px;
+  animation: bootUp 0.1s ease-out;
+}
+
+.taskbar-calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 16px;
+  color: #39FF14;
+  text-shadow: 0 0 6px rgba(0,255,65,0.4);
+}
+
+.taskbar-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.taskbar-calendar-day-label {
+  color: #1a8c00;
+  padding: 4px 2px;
+  font-size: 12px;
+}
+
+.taskbar-calendar-day {
+  padding: 4px 2px;
+  color: #00FF41;
+  cursor: default;
+  border: 1px solid transparent;
+}
+
+.taskbar-calendar-day.today {
+  border: 1px solid #00FF41;
+  background: rgba(0,255,65,0.1);
+  box-shadow: 0 0 4px rgba(0,255,65,0.3);
+  font-weight: bold;
+}
+
+.taskbar-calendar-day.other-month {
+  color: #1a3a1a;
+}
+
+/* ========================================
+   RESPONSIVE (Tablet)
+   ======================================== */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .win98-window {
+    min-width: 360px;
+  }
+
+  .win98-title-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+
+  .win98-titlebar {
+    height: 34px;
+    padding: 3px 6px;
+  }
+
+  .win98-checkbox {
+    width: 22px;
+    height: 22px;
+  }
+
+  .win98-checkbox:checked::after {
+    font-size: 18px;
+    top: -1px;
+    left: 3px;
+  }
+
+  .desktop-icon {
+    width: 100px;
+    padding: 10px 8px;
+  }
 }
 
 /* ========================================
@@ -746,7 +1069,7 @@ body {
     top: 0 !important;
     left: 0 !important;
     width: 100vw !important;
-    height: calc(100vh - 40px) !important;
+    height: calc(100vh - 48px) !important;
     transform: none !important;
   }
 
@@ -756,5 +1079,96 @@ body {
 
   .win98-titlebar {
     cursor: default;
+    height: 40px;
+    padding: 4px 8px;
+  }
+
+  .win98-title-btn {
+    width: 34px;
+    height: 34px;
+    font-size: 16px;
+  }
+
+  .win98-title-text {
+    font-size: 18px;
+  }
+
+  .win98-content {
+    padding: 12px;
+    font-size: 18px;
+  }
+
+  .win98-checkbox {
+    width: 26px;
+    height: 26px;
+  }
+
+  .win98-checkbox:checked::after {
+    font-size: 22px;
+    top: 0;
+    left: 4px;
+  }
+
+  .bevel-button {
+    font-size: 18px;
+    padding: 8px 16px;
+    min-height: 44px;
+  }
+
+  .win98-input,
+  .win98-select {
+    font-size: 18px;
+    padding: 8px 10px;
+    min-height: 44px;
+  }
+
+  .win98-taskbar {
+    height: 48px;
+    padding: 2px 6px;
+  }
+
+  .start-button {
+    height: 40px;
+    padding: 4px 12px;
+    font-size: 18px;
+  }
+
+  .taskbar-window-btn {
+    height: 36px;
+    min-width: 100px;
+    font-size: 14px;
+  }
+
+  .taskbar-clock {
+    height: 36px;
+    font-size: 16px;
+    padding: 0 10px;
+  }
+
+  .start-menu {
+    width: 280px;
+  }
+
+  .start-menu-item {
+    padding: 10px 14px;
+    font-size: 18px;
+  }
+
+  .habit-item {
+    padding: 10px 8px;
+    gap: 12px;
+  }
+
+  .win98-resize-handle {
+    display: none;
+  }
+
+  .context-menu {
+    min-width: 220px;
+  }
+
+  .context-menu-item {
+    padding: 10px 16px;
+    font-size: 18px;
   }
 }

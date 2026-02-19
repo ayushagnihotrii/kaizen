@@ -12,6 +12,9 @@ import TasksWindow from './TasksWindow';
 import Win98ActivityWindow from './Win98ActivityWindow';
 import TodaysTaskWindow from './TodaysTaskWindow';
 import Win98Notifications from './Win98Notifications';
+import TodaysTaskWidget from './TodaysTaskWidget';
+import ContextMenu from './ContextMenu';
+import BootScreen from './BootScreen';
 import { useAuth } from '../../contexts/AuthContext';
 
 // ── localStorage helpers ──────────────────────────
@@ -50,6 +53,7 @@ const defaultSettings = () => ({
   flicker: true,
   grain: true,
   vignette: true,
+  wallpaper: '/bg.jpg',
 });
 
 // ── Window definitions ────────────────────────────
@@ -197,6 +201,8 @@ export default function Desktop({
   const [startMenuOpen, setStartMenuOpen] = useState(false);
   const [nextZIndex, setNextZIndex] = useState(10);
   const [windowZIndices, setWindowZIndices] = useState({});
+  const [contextMenu, setContextMenu] = useState(null); // { x, y, items }
+  const [showBootScreen, setShowBootScreen] = useState(true);
   const desktopRef = useRef(null);
 
   // ── Persist habits ──
@@ -208,6 +214,43 @@ export default function Desktop({
   useEffect(() => {
     saveSettings(settings);
   }, [settings]);
+
+  // ── Keyboard shortcuts ──
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // Escape — close active window or context menu
+      if (e.key === 'Escape') {
+        if (contextMenu) {
+          setContextMenu(null);
+          return;
+        }
+        if (startMenuOpen) {
+          setStartMenuOpen(false);
+          return;
+        }
+        if (activeWindowId) {
+          closeWindow(activeWindowId);
+        }
+      }
+      // Ctrl+N — New Habit
+      if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
+        e.preventDefault();
+        openWindow('newhabit');
+      }
+      // Ctrl+T — Open Tasks
+      if ((e.ctrlKey || e.metaKey) && e.key === 't') {
+        e.preventDefault();
+        openWindow('tasks');
+      }
+      // Ctrl+, — Open Settings
+      if ((e.ctrlKey || e.metaKey) && e.key === ',') {
+        e.preventDefault();
+        openWindow('settings');
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeWindowId, contextMenu, startMenuOpen]);
 
   // ── Open a window ──
   const openWindow = useCallback((windowId) => {
@@ -291,7 +334,43 @@ export default function Desktop({
   const handleDesktopClick = useCallback(() => {
     setSelectedIcon(null);
     setStartMenuOpen(false);
+    setContextMenu(null);
   }, []);
+
+  // ── Desktop right-click (context menu) ──
+  const handleDesktopContextMenu = useCallback((e) => {
+    e.preventDefault();
+    setContextMenu({
+      x: e.clientX,
+      y: e.clientY,
+      items: [
+        { icon: '📝', label: 'New Habit', shortcut: '⌘N', action: () => openWindow('newhabit') },
+        { icon: '📋', label: 'Open Tasks', shortcut: '⌘T', action: () => openWindow('tasks') },
+        { icon: '📈', label: 'Activity', action: () => openWindow('activity') },
+        { divider: true },
+        { icon: '📊', label: 'Statistics', action: () => openWindow('stats') },
+        { icon: '⚙️', label: 'Settings', shortcut: '⌘,', action: () => openWindow('settings') },
+        { divider: true },
+        { icon: 'ℹ️', label: 'About KAIZEN', action: () => openWindow('about') },
+      ],
+    });
+  }, [openWindow]);
+
+  // ── Desktop icon right-click (context menu) ──
+  const handleIconContextMenu = useCallback((e, iconId) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setSelectedIcon(iconId);
+    setContextMenu({
+      x: e.clientX,
+      y: e.clientY,
+      items: [
+        { icon: '📂', label: 'Open', action: () => openWindow(iconId) },
+        { divider: true },
+        { icon: '📌', label: `Select "${DESKTOP_ICONS.find(i => i.id === iconId)?.label || iconId}"`, disabled: true },
+      ],
+    });
+  }, [openWindow]);
 
   // ── Add habit ──
   const handleSaveHabit = useCallback((habitData) => {
@@ -397,7 +476,7 @@ export default function Desktop({
           />
         );
       case 'about':
-        return <AboutWindow />;
+        return <AboutWindow onClose={() => closeWindow('about')} />;
       case 'tasks':
         return (
           <TasksWindow
@@ -445,9 +524,22 @@ export default function Desktop({
         fontFamily: "'VT323', ui-monospace, 'Courier New', monospace",
       }}
       onClick={handleDesktopClick}
+      onContextMenu={handleDesktopContextMenu}
     >
-      {/* Background grid */}
-      <div className="desktop-bg" />
+      {/* Boot Screen */}
+      {showBootScreen && (
+        <BootScreen onComplete={() => setShowBootScreen(false)} />
+      )}
+
+      {/* Background grid + wallpaper */}
+      <div className="desktop-bg" style={{
+        backgroundImage: `
+          repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(51,255,0,0.02) 59px, rgba(51,255,0,0.02) 60px),
+          repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(51,255,0,0.02) 59px, rgba(51,255,0,0.02) 60px),
+          linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)),
+          url('${settings.wallpaper || '/bg.jpg'}')
+        `,
+      }} />
 
       {/* CRT effects */}
       {settings.scanlines && <div className="crt-scanlines" />}
@@ -478,162 +570,18 @@ export default function Desktop({
             selected={selectedIcon === icon.id}
             onClick={(id) => setSelectedIcon(id)}
             onDoubleClick={(id) => openWindow(id)}
+            onContextMenu={(e) => handleIconContextMenu(e, icon.id)}
           />
         ))}
       </div>
 
       {/* Today's Tasks Desktop Widget */}
-      {(() => {
-        const today = new Date().toISOString().split('T')[0];
-        const todaysTasks = firebaseTasks.filter((t) => t.dueDate === today);
-        const completedCount = todaysTasks.filter((t) => t.isCompleted).length;
-        const sortedTasks = [...todaysTasks].sort((a, b) => {
-          if (a.isCompleted !== b.isCompleted) return a.isCompleted ? 1 : -1;
-          if (a.dueTime && b.dueTime) return a.dueTime.localeCompare(b.dueTime);
-          return 0;
-        });
-        return (
-          <div
-            style={{
-              position: 'absolute',
-              top: 16,
-              right: 20,
-              width: 300,
-              zIndex: 3,
-              pointerEvents: 'auto',
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Header */}
-            <div
-              style={{
-                fontSize: 28,
-                fontWeight: 'bold',
-                color: '#FF00FF',
-                textShadow: '0 0 8px #FF00FF, 0 0 16px #FF00FF, 0 0 32px rgba(255,0,255,0.4)',
-                marginBottom: 8,
-                textTransform: 'uppercase',
-                letterSpacing: 4,
-                textAlign: 'right',
-                cursor: 'pointer',
-              }}
-              onClick={() => openWindow('todaystask')}
-              title="Click to open TodaysTask.exe"
-            >
-              TODAYS TASK
-            </div>
-
-            {/* Tasks list widget */}
-            <div style={{
-              background: 'rgba(0, 0, 0, 0.7)',
-              border: '1px solid rgba(255, 0, 255, 0.3)',
-              borderRadius: 2,
-              padding: 10,
-              backdropFilter: 'blur(4px)',
-            }}>
-              {/* Progress */}
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                fontSize: 13,
-                marginBottom: 6,
-                color: '#FF00FF',
-              }}>
-                <span>{completedCount}/{todaysTasks.length} done</span>
-                <span>{todaysTasks.length > 0 ? Math.round((completedCount / todaysTasks.length) * 100) : 0}%</span>
-              </div>
-              <div style={{
-                width: '100%',
-                height: 4,
-                background: '#1a0a1a',
-                borderRadius: 2,
-                marginBottom: 8,
-                overflow: 'hidden',
-              }}>
-                <div style={{
-                  width: `${todaysTasks.length > 0 ? Math.round((completedCount / todaysTasks.length) * 100) : 0}%`,
-                  height: '100%',
-                  background: 'linear-gradient(90deg, #800080, #FF00FF)',
-                  transition: 'width 0.4s ease',
-                  boxShadow: '0 0 6px #FF00FF',
-                }} />
-              </div>
-
-              {/* Task items */}
-              {tasksLoading ? (
-                <div style={{ color: '#FF00FF', fontSize: 14, textAlign: 'center', padding: 8 }}>
-                  ⏳ Loading...
-                </div>
-              ) : sortedTasks.length === 0 ? (
-                <div style={{ color: '#804080', fontSize: 14, textAlign: 'center', padding: 12 }}>
-                  ✨ No tasks for today
-                </div>
-              ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 4, maxHeight: 280, overflowY: 'auto' }}>
-                  {sortedTasks.map((task) => (
-                    <div
-                      key={task.id}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 8,
-                        padding: '4px 6px',
-                        background: task.isCompleted ? 'rgba(128,0,128,0.1)' : 'rgba(255,0,255,0.05)',
-                        borderLeft: `2px solid ${task.isCompleted ? '#804080' : '#FF00FF'}`,
-                        opacity: task.isCompleted ? 0.5 : 1,
-                        cursor: 'pointer',
-                        transition: 'background 0.15s',
-                      }}
-                      onClick={() => onToggleComplete(task.id)}
-                      title="Click to toggle complete"
-                    >
-                      <span style={{ fontSize: 14, flexShrink: 0 }}>
-                        {task.isCompleted ? '✅' : '⬜'}
-                      </span>
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{
-                          fontSize: 15,
-                          color: task.isCompleted ? '#804080' : '#FF00FF',
-                          textDecoration: task.isCompleted ? 'line-through' : 'none',
-                          textShadow: task.isCompleted ? 'none' : '0 0 4px rgba(255,0,255,0.3)',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap',
-                        }}>
-                          {task.title}
-                        </div>
-                      </div>
-                      {task.dueTime && (
-                        <span style={{ fontSize: 12, color: '#804080', flexShrink: 0 }}>
-                          {new Date(`2000-01-01T${task.dueTime}`).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}
-                        </span>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Open full window link */}
-              <div
-                style={{
-                  marginTop: 8,
-                  textAlign: 'center',
-                  fontSize: 12,
-                  color: '#804080',
-                  cursor: 'pointer',
-                  transition: 'color 0.15s',
-                }}
-                onClick={() => openWindow('todaystask')}
-                onMouseEnter={(e) => e.target.style.color = '#FF00FF'}
-                onMouseLeave={(e) => e.target.style.color = '#804080'}
-              >
-                ▸ Open TodaysTask.exe
-              </div>
-            </div>
-          </div>
-        );
-      })()}
-
+      <TodaysTaskWidget
+        firebaseTasks={firebaseTasks}
+        tasksLoading={tasksLoading}
+        onToggleComplete={onToggleComplete}
+        onOpenWindow={openWindow}
+      />
       {/* Windows */}
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 40, zIndex: 2, pointerEvents: 'none' }}>
           {openWindows.map((win) => {
@@ -661,6 +609,16 @@ export default function Desktop({
             );
           })}
       </div>
+
+      {/* Context Menu */}
+      {contextMenu && (
+        <ContextMenu
+          x={contextMenu.x}
+          y={contextMenu.y}
+          items={contextMenu.items}
+          onClose={() => setContextMenu(null)}
+        />
+      )}
 
       {/* Start Menu */}
       {startMenuOpen && (

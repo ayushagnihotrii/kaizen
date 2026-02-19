@@ -95,7 +95,7 @@ const ICONS = {
   ),
 };
 
-export default function DesktopIcon({ id, label, iconType, selected, onClick, onDoubleClick }) {
+export default function DesktopIcon({ id, label, iconType, selected, onClick, onDoubleClick, onContextMenu }) {
   const lastTap = React.useRef(0);
 
   const handleClick = (e) => {
@@ -117,6 +117,7 @@ export default function DesktopIcon({ id, label, iconType, selected, onClick, on
       className={`desktop-icon ${selected ? 'selected' : ''}`}
       onClick={handleClick}
       onDoubleClick={(e) => { e.stopPropagation(); onDoubleClick?.(id); }}
+      onContextMenu={onContextMenu}
     >
       <div className="desktop-icon-img">
         {ICONS[iconType] || ICONS.habits}

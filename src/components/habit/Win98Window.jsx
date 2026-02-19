@@ -21,6 +21,9 @@ export default function Win98Window({
   const [preMaxSize, setPreMaxSize] = useState(null);
   const [preMaxPos, setPreMaxPos] = useState(null);
   const [position, setPosition] = useState(defaultPosition);
+  const [animState, setAnimState] = useState('open'); // 'open' | 'visible' | 'minimizing' | 'restoring'
+  const [isResizing, setIsResizing] = useState(false);
+  const resizeStartRef = useRef(null);
 
   const handleMaximize = useCallback(() => {
     if (isMaximized) {
@@ -41,8 +44,75 @@ export default function Win98Window({
     setPosition({ x: data.x, y: data.y });
   }, []);
 
-  // Don't render if minimized
-  if (isMinimized) return null;
+  // Handle minimize animation
+  const handleMinimize = useCallback(() => {
+    setAnimState('minimizing');
+    setTimeout(() => {
+      onMinimize?.(id);
+    }, 200);
+  }, [id, onMinimize]);
+
+  // Handle restore animation
+  useEffect(() => {
+    if (!isMinimized && animState === 'minimizing') {
+      setAnimState('restoring');
+      setTimeout(() => setAnimState('visible'), 200);
+    }
+  }, [isMinimized]);
+
+  // After open animation completes
+  useEffect(() => {
+    if (animState === 'open') {
+      const timer = setTimeout(() => setAnimState('visible'), 150);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  // Resize handlers
+  const handleResizeStart = useCallback((e, direction) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsResizing(true);
+    resizeStartRef.current = {
+      startX: e.clientX,
+      startY: e.clientY,
+      startWidth: size.width,
+      startHeight: size.height,
+      direction,
+    };
+
+    const handleResizeMove = (moveE) => {
+      if (!resizeStartRef.current) return;
+      const { startX, startY, startWidth, startHeight, direction: dir } = resizeStartRef.current;
+      const dx = moveE.clientX - startX;
+      const dy = moveE.clientY - startY;
+
+      setSize((prev) => ({
+        width: dir.includes('right') || dir.includes('corner')
+          ? Math.max(300, startWidth + dx) : prev.width,
+        height: dir.includes('bottom') || dir.includes('corner')
+          ? Math.max(200, startHeight + dy) : prev.height,
+      }));
+    };
+
+    const handleResizeEnd = () => {
+      setIsResizing(false);
+      resizeStartRef.current = null;
+      document.removeEventListener('mousemove', handleResizeMove);
+      document.removeEventListener('mouseup', handleResizeEnd);
+    };
+
+    document.addEventListener('mousemove', handleResizeMove);
+    document.addEventListener('mouseup', handleResizeEnd);
+  }, [size]);
+
+  // Don't render if minimized (after animation)
+  if (isMinimized && animState !== 'minimizing') return null;
+
+  const animClass =
+    animState === 'open' ? 'window-open' :
+    animState === 'minimizing' ? 'window-minimizing' :
+    animState === 'restoring' ? 'window-restoring' : '';
 
   const windowStyle = isMaximized
     ? {
@@ -64,11 +134,11 @@ export default function Win98Window({
       position={isMaximized ? { x: 0, y: 0 } : position}
       onDrag={handleDrag}
       onStart={() => onFocus?.(id)}
-      disabled={isMaximized}
+      disabled={isMaximized || isResizing}
     >
       <div
         ref={nodeRef}
-        className="win98-window window-open"
+        className={`win98-window ${animClass}`}
         style={windowStyle}
         onMouseDown={() => onFocus?.(id)}
       >
@@ -81,7 +151,7 @@ export default function Win98Window({
           <div className="win98-title-buttons">
             <button
               className="win98-title-btn"
-              onClick={(e) => { e.stopPropagation(); onMinimize?.(id); }}
+              onClick={(e) => { e.stopPropagation(); handleMinimize(); }}
               title="Minimize"
             >
               _
@@ -108,6 +178,25 @@ export default function Win98Window({
         <div className="win98-content">
           {children}
         </div>
+
+        {/* Resize Handles (only when not maximized) */}
+        {!isMaximized && (
+          <>
+            <div
+              className="win98-resize-handle resize-right"
+              onMouseDown={(e) => handleResizeStart(e, 'right')}
+            />
+            <div
+              className="win98-resize-handle resize-bottom"
+              onMouseDown={(e) => handleResizeStart(e, 'bottom')}
+            />
+            <div
+              className="win98-resize-handle resize-corner"
+              onMouseDown={(e) => handleResizeStart(e, 'corner')}
+            />
+            <div className="win98-resize-corner-indicator" />
+          </>
+        )}
       </div>
     </Draggable>
   );

@@ -6,6 +6,7 @@ export default function Win98Notifications({ tasks = [], onOpenWindow }) {
   const [upcomingTasks, setUpcomingTasks] = useState([]);
 
   useEffect(() => {
+    const notifiedRef = new Set();
     const check = () => {
       const now = new Date();
       const upcoming = tasks.filter((task) => {
@@ -21,24 +22,34 @@ export default function Win98Notifications({ tasks = [], onOpenWindow }) {
       });
       setUpcomingTasks(upcoming);
 
-      // Browser notification
+      // Browser notifications at 60, 30, and 15 minute marks
       if ('Notification' in window && Notification.permission === 'granted' && upcoming.length > 0) {
         upcoming.forEach((task) => {
           const taskDateTime = task.dueTime
             ? parseISO(`${task.dueDate}T${task.dueTime}`)
             : parseISO(`${task.dueDate}T23:59:59`);
           const minutesLeft = differenceInMinutes(taskDateTime, now);
-          if (minutesLeft >= 59 && minutesLeft <= 61) {
-            new Notification('⏰ Task Due Soon!', {
-              body: `"${task.title}" is due in ${minutesLeft} minutes`,
-              tag: task.id,
-            });
-          }
+
+          const thresholds = [
+            { min: 58, max: 62, label: '1 hour', key: `${task.id}-60` },
+            { min: 28, max: 32, label: '30 minutes', key: `${task.id}-30` },
+            { min: 13, max: 17, label: '15 minutes', key: `${task.id}-15` },
+          ];
+
+          thresholds.forEach(({ min, max, label, key }) => {
+            if (minutesLeft >= min && minutesLeft <= max && !notifiedRef.has(key)) {
+              notifiedRef.add(key);
+              new Notification(`⏰ Task Due in ~${label}!`, {
+                body: `"${task.title}" is due in ${minutesLeft} minutes`,
+                tag: key,
+              });
+            }
+          });
         });
       }
     };
     check();
-    const interval = setInterval(check, 60000);
+    const interval = setInterval(check, 30000); // Check every 30 seconds
     return () => clearInterval(interval);
   }, [tasks]);
 
