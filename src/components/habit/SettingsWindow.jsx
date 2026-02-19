@@ -113,8 +113,21 @@ export default function SettingsWindow({ settings, onUpdateSettings, onExport, o
                 boxShadow: settings.wallpaper === wp.url ? '0 0 8px rgba(0,255,65,0.4)' : 'none',
                 overflow: 'hidden',
                 position: 'relative',
-                height: 52,
+                height: 64,
                 background: '#000',
+                transition: 'border-color 0.15s, box-shadow 0.15s, transform 0.1s',
+              }}
+              onMouseEnter={(e) => {
+                if (settings.wallpaper !== wp.url) {
+                  e.currentTarget.style.borderColor = '#1a8c00';
+                  e.currentTarget.style.transform = 'scale(1.05)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (settings.wallpaper !== wp.url) {
+                  e.currentTarget.style.borderColor = '#2a2a2a';
+                  e.currentTarget.style.transform = 'scale(1)';
+                }
               }}
             >
               <img
@@ -208,14 +221,26 @@ export default function SettingsWindow({ settings, onUpdateSettings, onExport, o
         </div>
       </div>
 
+      {/* Keyboard Shortcuts */}
+      <div className="win98-groupbox">
+        <span className="win98-groupbox-label">Keyboard Shortcuts</span>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px 16px', fontSize: 14 }}>
+          <span style={{ color: '#39FF14' }}>Esc</span><span>Close active window</span>
+          <span style={{ color: '#39FF14' }}>⌘/Ctrl + N</span><span>New Habit</span>
+          <span style={{ color: '#39FF14' }}>⌘/Ctrl + T</span><span>Open Tasks</span>
+          <span style={{ color: '#39FF14' }}>⌘/Ctrl + ,</span><span>Settings</span>
+          <span style={{ color: '#39FF14' }}>Right-click</span><span>Context menu</span>
+        </div>
+      </div>
+
       {/* System Info */}
       <div className="terminal-box" style={{ fontSize: 14 }}>
 {`SYSTEM INFO
 ───────────────────
-OS:     HABIT SYSTEM v1.0
+OS:     KAIZEN 改善 v2.0
 KERNEL: React ${React.version}
 SHELL:  VT323 Terminal
-MEM:    localStorage`}
+MEM:    localStorage + Firebase`}
       </div>
     </div>
   );

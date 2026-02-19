@@ -76,27 +76,37 @@ export default function StatsWindow({ habits }) {
 
       {/* Summary stats */}
       <div className="terminal-box">
-{`╔══════════════════════════════════════╗
-║     HABIT TRACKER STATISTICS         ║
-╠══════════════════════════════════════╣
-║                                      ║
-║  TOTAL HABITS:      ${String(totalHabits).padStart(4)}             ║
-║  COMPLETED TODAY:   ${String(completedToday).padStart(4)}             ║
-║  COMPLETION RATE:   ${String(completionPct).padStart(3)}%             ║
-║  LONGEST STREAK:    ${String(longestStreak).padStart(4)} 🔥          ║
-║  AVERAGE STREAK:    ${String(avgStreak).padStart(4)}             ║
-║  TOTAL COMPLETIONS: ${String(totalCompletions).padStart(4)}             ║
-║                                      ║
-╚══════════════════════════════════════╝`}
+{`╔════════════════════════════════════╗
+║    HABIT TRACKER STATISTICS        ║
+╠════════════════════════════════════╣
+║                                    ║
+║  TOTAL HABITS:      ${String(totalHabits).padStart(4)}           ║
+║  COMPLETED TODAY:   ${String(completedToday).padStart(4)}           ║
+║  COMPLETION RATE:   ${String(completionPct).padStart(3)}%           ║
+║  LONGEST STREAK:    ${String(longestStreak).padStart(4)} 🔥        ║
+║  AVERAGE STREAK:    ${String(avgStreak).padStart(4)}           ║
+║  TOTAL COMPLETIONS: ${String(totalCompletions).padStart(4)}           ║
+║                                    ║
+╚════════════════════════════════════╝`}
       </div>
 
       {/* 7-day chart */}
       <div className="win98-groupbox">
         <span className="win98-groupbox-label">7-Day Activity</span>
         <div className="terminal-box" style={{ fontSize: 14, lineHeight: 1.3 }}>
-{`  COMPLETIONS (LAST 7 DAYS)
+{totalHabits === 0 ? (
+`  COMPLETIONS (LAST 7 DAYS)
   ─────────────────────────
-${buildBarChart()}`}
+
+   📊 No habit data yet.
+   Create habits with NewHabit.exe
+   and start tracking your progress!
+`
+) : (
+`  COMPLETIONS (LAST 7 DAYS)
+  ─────────────────────────
+${buildBarChart()}`
+)}
         </div>
       </div>
 
@@ -104,9 +114,19 @@ ${buildBarChart()}`}
       <div className="win98-groupbox">
         <span className="win98-groupbox-label">Streak Breakdown</span>
         <div className="terminal-box" style={{ fontSize: 14, lineHeight: 1.3 }}>
-{`  CURRENT STREAKS
+{totalHabits === 0 ? (
+`  CURRENT STREAKS
   ─────────────────────────────────────
-${buildStreakChart()}`}
+
+   🔥 No streaks to display.
+   Complete habits daily to build
+   streaks and level up!
+`
+) : (
+`  CURRENT STREAKS
+  ─────────────────────────────────────
+${buildStreakChart()}`
+)}
         </div>
       </div>
     </div>

@@ -111,7 +111,12 @@ export default function Win98ActivityWindow({ tasks = [] }) {
 
       {/* Stats line */}
       <div className="terminal-box" style={{ fontSize: 14, padding: 8 }}>
-        {'>'} {totalThisMonth} TASKS COMPLETED IN {monthYear}
+        <div>{'>'} {totalThisMonth} TASKS COMPLETED IN {monthYear}</div>
+        {totalThisMonth === 0 && (
+          <div style={{ color: '#1a8c00', marginTop: 4, fontSize: 13 }}>
+            {'>'} Complete tasks to light up the calendar!
+          </div>
+        )}
       </div>
 
       {/* Day-of-week labels */}
@@ -142,33 +147,50 @@ export default function Win98ActivityWindow({ tasks = [] }) {
 
           const bgColor = getIntensityColor(cell.taskCount);
           const isToday = cell.date === new Date().toISOString().split('T')[0];
+          const isPast = cell.date < new Date().toISOString().split('T')[0];
 
           return (
             <div
               key={cell.date}
-              title={`${cell.date}: ${cell.taskCount} task${cell.taskCount !== 1 ? 's' : ''}`}
+              title={`${cell.date}: ${cell.taskCount} task${cell.taskCount !== 1 ? 's' : ''} completed`}
               style={{
                 aspectRatio: '1',
                 background: bgColor,
-                border: isToday ? '2px solid #33FF00' : '1px solid #333',
+                border: isToday ? '2px solid #33FF00' : '1px solid #2a2a2a',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
                 cursor: 'default',
                 position: 'relative',
-                boxShadow: cell.taskCount > 0 ? `0 0 4px ${bgColor}` : 'none',
+                boxShadow: isToday
+                  ? '0 0 8px rgba(51,255,0,0.5), inset 0 0 8px rgba(51,255,0,0.1)'
+                  : cell.taskCount > 0 ? `0 0 4px ${bgColor}` : 'none',
+                transition: 'transform 0.1s, box-shadow 0.15s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'scale(1.1)';
+                e.currentTarget.style.boxShadow = `0 0 8px ${cell.taskCount > 0 ? bgColor : 'rgba(51,255,0,0.3)'}`;
+                e.currentTarget.style.zIndex = '5';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'scale(1)';
+                e.currentTarget.style.boxShadow = isToday
+                  ? '0 0 8px rgba(51,255,0,0.5), inset 0 0 8px rgba(51,255,0,0.1)'
+                  : cell.taskCount > 0 ? `0 0 4px ${bgColor}` : 'none';
+                e.currentTarget.style.zIndex = '1';
               }}
             >
               <span style={{
-                fontSize: 12,
-                color: cell.taskCount > 0 ? '#fff' : '#333',
+                fontSize: 13,
+                color: isToday ? '#39FF14' : cell.taskCount > 0 ? '#fff' : (isPast ? '#444' : '#666'),
                 fontWeight: isToday ? 'bold' : 'normal',
+                textShadow: isToday ? '0 0 6px rgba(51,255,0,0.5)' : 'none',
               }}>
                 {cell.day}
               </span>
               {cell.taskCount > 0 && (
-                <span style={{ fontSize: 10, color: '#33FF00' }}>
+                <span style={{ fontSize: 10, color: '#33FF00', fontWeight: 'bold' }}>
                   {getIntensityChar(cell.taskCount)}{cell.taskCount}
                 </span>
               )}
@@ -192,12 +214,18 @@ export default function Win98ActivityWindow({ tasks = [] }) {
         {[0, 1, 3, 5, 8].map((count) => (
           <div
             key={count}
+            title={`${count}+ tasks`}
             style={{
-              width: 16,
-              height: 16,
+              width: 18,
+              height: 18,
               background: getIntensityColor(count),
               border: '1px solid #2a2a2a',
+              boxShadow: count > 0 ? `0 0 4px ${getIntensityColor(count)}` : 'none',
+              transition: 'transform 0.1s',
+              cursor: 'default',
             }}
+            onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.2)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
           />
         ))}
         <span>MORE</span>

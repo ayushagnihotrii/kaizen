@@ -100,7 +100,7 @@ export default function NewHabitWindow({ onSave, onCancel }) {
       {/* Category */}
       <div className="win98-groupbox">
         <span className="win98-groupbox-label">Category</span>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, maxHeight: 100, overflowY: 'auto' }}>
           {CATEGORIES.map((cat) => (
             <button
               key={cat.value}
@@ -111,6 +111,10 @@ export default function NewHabitWindow({ onSave, onCancel }) {
                 background: category === cat.value ? cat.color : 'transparent',
                 cursor: 'pointer',
                 fontSize: 14,
+                padding: '3px 10px',
+                transition: 'all 0.15s ease',
+                boxShadow: category === cat.value ? `0 0 8px ${cat.color}60` : 'none',
+                whiteSpace: 'nowrap',
               }}
               onClick={() => setCategory(cat.value)}
             >
@@ -123,13 +127,20 @@ export default function NewHabitWindow({ onSave, onCancel }) {
       {/* Color Picker */}
       <div className="win98-groupbox">
         <span className="win98-groupbox-label">Color</span>
-        <div className="win98-color-grid">
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(8, 1fr)', gap: 4 }}>
           {COLORS.map((c) => (
             <div
               key={c}
               className={`win98-color-swatch ${color === c ? 'selected' : ''}`}
-              style={{ background: c }}
+              style={{
+                background: c,
+                width: '100%',
+                height: 28,
+                transition: 'transform 0.1s, box-shadow 0.15s',
+              }}
               onClick={() => setColor(c)}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.15)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
             />
           ))}
         </div>
@@ -152,11 +163,26 @@ export default function NewHabitWindow({ onSave, onCancel }) {
 
       {/* Buttons */}
       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: 4 }}>
-        <button className="bevel-button" onClick={handleSubmit} disabled={!name.trim()}>
-          💾 Save
+        <button
+          className="bevel-button"
+          onClick={handleSubmit}
+          disabled={!name.trim()}
+          style={{
+            background: name.trim() ? '#0a2a0a' : undefined,
+            borderColor: name.trim() ? '#33FF00' : undefined,
+            boxShadow: name.trim() ? '0 0 8px rgba(51,255,0,0.3)' : undefined,
+            fontWeight: 'bold',
+            padding: '6px 20px',
+          }}
+        >
+          💾 SAVE
         </button>
-        <button className="bevel-button" onClick={onCancel}>
-          ❌ Cancel
+        <button
+          className="bevel-button"
+          onClick={onCancel}
+          style={{ color: '#FF4444', borderColor: '#662222', padding: '6px 20px' }}
+        >
+          ❌ CANCEL
         </button>
       </div>
     </div>
