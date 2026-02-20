@@ -52,6 +52,23 @@ export default function TodaysTaskWindow({
         </span>
       </div>
 
+      {/* Completion celebration */}
+      {progressPercent === 100 && todaysTasks.length > 0 && (
+        <div className="bevel-inset" style={{
+          textAlign: 'center',
+          padding: '8px 12px',
+          background: '#0a2a0a',
+          borderColor: '#33FF00',
+          boxShadow: '0 0 12px rgba(51,255,0,0.15)',
+        }}>
+          <div style={{ fontSize: 20, marginBottom: 2 }}>🏆🎉✨</div>
+          <div style={{ color: '#39FF14', fontWeight: 'bold', fontSize: 15, textShadow: '0 0 8px rgba(57,255,20,0.5)' }}>
+            ALL TASKS COMPLETED!
+          </div>
+          <div style={{ color: '#1a8c00', fontSize: 13 }}>Outstanding work today, keep it up!</div>
+        </div>
+      )}
+
       {/* Progress bar */}
       <div className="bevel-inset" style={{ padding: 8 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4, fontSize: 13 }}>
@@ -201,9 +218,25 @@ export default function TodaysTaskWindow({
               </div>
 
               {/* Time */}
-              <div style={{ width: 60, textAlign: 'center', fontSize: 13, color: '#33FF00' }}>
+              <div style={{
+                width: 70,
+                textAlign: 'center',
+                fontSize: 13,
+                color: task.dueTime && !task.isCompleted && (() => {
+                  const now = new Date();
+                  const [h, m] = task.dueTime.split(':').map(Number);
+                  return (now.getHours() > h || (now.getHours() === h && now.getMinutes() > m));
+                })() ? '#FF4444' : '#33FF00',
+              }}>
                 {task.dueTime ? (
-                  <span>🕐 {formatTime(task.dueTime)}</span>
+                  <span>
+                    {!task.isCompleted && (() => {
+                      const now = new Date();
+                      const [h, m] = task.dueTime.split(':').map(Number);
+                      return (now.getHours() > h || (now.getHours() === h && now.getMinutes() > m));
+                    })() ? '⚠️' : '🕐'}{' '}
+                    {formatTime(task.dueTime)}
+                  </span>
                 ) : (
                   <span style={{ color: '#1a3a1a' }}>—</span>
                 )}

@@ -796,6 +796,11 @@ body {
   100% { opacity: 1; transform: scale(1) translateY(0); }
 }
 
+@keyframes progress-glow {
+  0%, 100% { box-shadow: 0 0 8px #33FF00; }
+  50% { box-shadow: 0 0 18px #39FF14, 0 0 30px rgba(51,255,0,0.3); }
+}
+
 .window-open {
   animation: bootUp 0.15s ease-out;
 }

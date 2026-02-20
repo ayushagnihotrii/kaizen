@@ -129,9 +129,22 @@ export default function HabitListWindow({ habits, onToggleHabit, onDeleteHabit }
                     fontSize: 12,
                     color: '#FF4444',
                     minWidth: 'auto',
+                    transition: 'background 0.15s, box-shadow 0.15s',
                   }}
-                  onClick={() => onDeleteHabit(habit.id)}
+                  onClick={() => {
+                    if (window.confirm(`Delete "${habit.name}"? This cannot be undone.`)) {
+                      onDeleteHabit(habit.id);
+                    }
+                  }}
                   title="Delete habit"
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = '#2a0a0a';
+                    e.currentTarget.style.boxShadow = '0 0 6px rgba(255,68,68,0.3)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = '';
+                    e.currentTarget.style.boxShadow = '';
+                  }}
                 >
                   ×
                 </button>
@@ -144,16 +157,23 @@ export default function HabitListWindow({ habits, onToggleHabit, onDeleteHabit }
       {/* Progress bar */}
       {habits.length > 0 && (
         <div style={{ marginTop: 10 }}>
-          <div style={{ fontSize: 12, marginBottom: 4, textTransform: 'uppercase' }}>
-            Today's Progress:
+          <div style={{ fontSize: 12, marginBottom: 4, textTransform: 'uppercase', display: 'flex', justifyContent: 'space-between' }}>
+            <span>Today's Progress:</span>
+            {completedToday === habits.length && (
+              <span style={{ color: '#39FF14', fontWeight: 'bold' }}>🏆 ALL DONE!</span>
+            )}
           </div>
-          <div className="bevel-inset" style={{ height: 20, background: '#0a0a0a', position: 'relative' }}>
+          <div className="bevel-inset" style={{ height: 22, background: '#0a0a0a', position: 'relative', overflow: 'hidden' }}>
             <div
               style={{
                 height: '100%',
                 width: `${habits.length > 0 ? (completedToday / habits.length) * 100 : 0}%`,
-                background: 'linear-gradient(90deg, #000080, #33FF00)',
-                transition: 'width 0.3s',
+                background: completedToday === habits.length
+                  ? 'linear-gradient(90deg, #00FF41, #39FF14, #00FF41)'
+                  : 'linear-gradient(90deg, #000080, #33FF00)',
+                transition: 'width 0.4s ease',
+                boxShadow: completedToday === habits.length ? '0 0 12px #33FF00' : 'none',
+                animation: completedToday === habits.length ? 'progress-glow 1.5s ease-in-out infinite' : 'none',
               }}
             />
             <span style={{

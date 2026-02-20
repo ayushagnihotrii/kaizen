@@ -177,11 +177,26 @@ export default function TasksWindow({
           </div>
 
           <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end' }}>
-            <button className="bevel-button" onClick={handleSubmit} disabled={!title.trim()}>
-              {editingTask ? '💾 Save Changes' : '💾 Add Task'}
+            <button
+              className="bevel-button"
+              onClick={handleSubmit}
+              disabled={!title.trim()}
+              style={{
+                background: title.trim() ? '#0a2a0a' : undefined,
+                borderColor: title.trim() ? '#33FF00' : undefined,
+                boxShadow: title.trim() ? '0 0 8px rgba(51,255,0,0.3)' : undefined,
+                fontWeight: 'bold',
+                padding: '4px 20px',
+              }}
+            >
+              {editingTask ? '💾 SAVE CHANGES' : '💾 ADD TASK'}
             </button>
-            <button className="bevel-button" onClick={resetForm}>
-              ❌ Cancel
+            <button
+              className="bevel-button"
+              onClick={resetForm}
+              style={{ color: '#FF4444', borderColor: '#662222', padding: '4px 20px' }}
+            >
+              ❌ CANCEL
             </button>
           </div>
         </div>
@@ -195,10 +210,18 @@ export default function TasksWindow({
         </div>
       ) : filteredTasks.length === 0 ? (
         <div style={{ textAlign: 'center', padding: 32, color: '#1a8c00' }}>
-          <div style={{ fontSize: 32, marginBottom: 8 }}>📭</div>
-          <div>NO {currentView === 'starred' ? 'STARRED ' : ''}TASKS FOUND</div>
-          <div style={{ fontSize: 14, marginTop: 4 }}>
-            Click "NEW TASK" to create one
+          <div style={{ fontSize: 40, marginBottom: 8 }}>{currentView === 'starred' ? '⭐' : '📭'}</div>
+          <div style={{ fontSize: 16, color: '#33FF00', fontWeight: 'bold' }}>
+            NO {currentView === 'starred' ? 'STARRED ' : ''}TASKS FOUND
+          </div>
+          <div style={{ fontSize: 14, marginTop: 6, lineHeight: 1.5 }}>
+            {currentView === 'starred'
+              ? 'Star important tasks with ☆ to see them here'
+              : 'Click ➕ NEW TASK above to get started'
+            }
+          </div>
+          <div style={{ fontSize: 13, marginTop: 12, color: '#0d4d00' }}>
+            💡 Tip: Set due dates to see tasks in Today's view
           </div>
         </div>
       ) : (
@@ -252,12 +275,25 @@ export default function TasksWindow({
                     {task.description}
                   </div>
                 )}
-                {(task.dueDate || task.dueTime) && (
-                  <div style={{ display: 'flex', gap: 8, fontSize: 12, color: '#1a8c00', marginTop: 2 }}>
-                    {task.dueDate && <span>📅 {formatDate(task.dueDate)}</span>}
-                    {task.dueTime && <span>🕐 {formatTime(task.dueTime)}</span>}
-                  </div>
-                )}
+                {(task.dueDate || task.dueTime) && (() => {
+                  const isOverdue = task.dueDate && !task.isCompleted && task.dueDate < new Date().toISOString().split('T')[0];
+                  const isDueToday = task.dueDate === new Date().toISOString().split('T')[0];
+                  return (
+                    <div style={{
+                      display: 'flex', gap: 8, fontSize: 12, marginTop: 2,
+                      color: isOverdue ? '#FF4444' : isDueToday ? '#FFFF00' : '#1a8c00',
+                    }}>
+                      {task.dueDate && (
+                        <span>
+                          {isOverdue ? '⚠️' : '📅'} {formatDate(task.dueDate)}
+                          {isOverdue && <span style={{ marginLeft: 4, fontWeight: 'bold' }}>OVERDUE</span>}
+                          {isDueToday && !task.isCompleted && <span style={{ marginLeft: 4 }}>TODAY</span>}
+                        </span>
+                      )}
+                      {task.dueTime && <span>🕐 {formatTime(task.dueTime)}</span>}
+                    </div>
+                  );
+                })()}
               </div>
 
               {/* Star */}

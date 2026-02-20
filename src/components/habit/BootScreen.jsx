@@ -1,14 +1,26 @@
 import React, { useState, useEffect } from 'react';
 
 const BOOT_LINES = [
-  'KAIZEN BIOS v2.0 — HABIT SYSTEM',
-  'Checking memory... OK',
-  'Loading React Runtime...',
+  'KAIZEN BIOS v2.0 — 改善 HABIT SYSTEM',
+  'CPU: Discipline Core @ 3.2GHz... OK',
+  'RAM: 256MB Willpower Module... OK',
+  'Loading React Runtime v18...',
   'Initializing Firebase Auth...',
   'Connecting to Cloud Sync...',
   'Loading habits from localStorage...',
   'Mounting CRT Display Driver...',
+  'Calibrating streak counter...',
   'Starting Desktop Environment...',
+];
+
+const TIPS = [
+  '💡 Right-click the desktop for quick actions',
+  '💡 Use ⌘+N to quickly create a new habit',
+  '💡 Press Esc to close the active window',
+  '💡 Build streaks by completing habits daily',
+  '💡 Star important tasks to find them faster',
+  '💡 Set due times to get overdue alerts',
+  '💡 Check Activity.exe for your monthly heatmap',
 ];
 
 export default function BootScreen({ onComplete }) {
@@ -116,6 +128,20 @@ export default function BootScreen({ onComplete }) {
         }}>
           Loading... {progress}%
         </div>
+
+        {/* Random tip */}
+        {progress >= 80 && (
+          <div style={{
+            textAlign: 'center',
+            marginTop: 16,
+            fontSize: 14,
+            color: '#0d4d00',
+            opacity: fadeOut ? 0 : 1,
+            transition: 'opacity 0.3s',
+          }}>
+            {TIPS[Math.floor(Date.now() / 86400000) % TIPS.length]}
+          </div>
+        )}
       </div>
     </div>
   );
