@@ -124,7 +124,7 @@ export default function Taskbar({ windows, activeWindowId, onWindowClick, onStar
             onClick={() => onWindowClick(win.id)}
             title={win.title}
           >
-            📁 {win.title}
+            <span style={{ fontSize: 20 }}>📁</span> {win.title}
           </button>
         ))}
       </div>
